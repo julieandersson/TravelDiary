@@ -69,6 +69,7 @@ namespace TravelDiary
             newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
             newTrip.StartDate = PromptForDateInput("Ange startdatum för resan (yyyy-mm-dd): ");
             newTrip.EndDate = PromptForDateInput("Ange slutdatum för resan (yyyy-mm-dd): ");
+            newTrip.Cost = PromptForDecimalInput("Ange kostnad för resan (SEK): ");
 
             Console.WriteLine("Ange reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
             while (true)
@@ -175,6 +176,29 @@ namespace TravelDiary
             } while (true);
 
             return dateValue; // Returnera det giltiga datumet
+        }
+
+        public static decimal PromptForDecimalInput(string prompt)
+        {
+            decimal value;
+            do
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                // Kontrollera att input endast innehåller siffror och kan konverteras till ett decimaltal
+                if (string.IsNullOrEmpty(input) || !decimal.TryParse(input, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out value) || value < 0)
+                {
+                   Console.WriteLine("Ogiltig inmatning. Ange endast positiva siffror (exempel: 20000). Försök igen."); // Felmeddelande vid ogiltig input
+                }
+                else
+                {
+                   break; // Om input är giltig, avsluta loopen
+                }
+            } while (true);
+
+            return value; // Returnera det giltiga decimaltalet
+            
         }
 
         // Läser in alla resor från JSON-filen

@@ -11,5 +11,17 @@
       "Alicia"
     ],
     "Type": 0
+  },
+  {
+    "Destination": "Italien",
+    "Continent": "test",
+    "Duration": 5,
+    "StartDate": "2024-12-01T00:00:00",
+    "EndDate": "2024-12-10T00:00:00",
+    "Cost": 10000,
+    "Companions": [
+      "Soloresa"
+    ],
+    "Type": 0
   }
 ]
