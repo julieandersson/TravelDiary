@@ -67,6 +67,8 @@ namespace TravelDiary
             newTrip.Destination = PromptForInput("Ange resmål: ");
             newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
             newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
+            newTrip.StartDate = PromptForDateInput("Ange startdatum för resan (yyyy-mm-dd): ");
+            newTrip.EndDate = PromptForDateInput("Ange slutdatum för resan (yyyy-mm-dd): ");
 
             Console.WriteLine("Ange reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
             while (true)
@@ -144,6 +146,35 @@ namespace TravelDiary
             } while (true);
 
             return value;
+        }
+
+        public static DateTime PromptForDateInput(string prompt)
+        {
+            DateTime dateValue;
+            do
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
+
+                // Försök att parsa input till ett giltigt datum
+                if (!DateTime.TryParseExact(input, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                {
+                    Console.WriteLine("Ogiltigt datumformat. Ange datum i formatet yyyy-MM-dd.");
+                    continue;
+                }
+                else if (dateValue >= DateTime.Today) // Kontrollera om datumet är i framtiden
+                {
+                    Console.WriteLine("Datumet kan inte vara i framtiden. Försök igen.");
+                    continue;
+
+                }
+                else
+                {
+                    break; // Om input är giltigt, avsluta loopen
+                }
+            } while (true);
+
+            return dateValue; // Returnera det giltiga datumet
         }
 
         // Läser in alla resor från JSON-filen

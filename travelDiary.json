@@ -3,8 +3,8 @@
     "Destination": "Thailand",
     "Continent": "Asien",
     "Duration": 21,
-    "StartDate": "0001-01-01T00:00:00",
-    "EndDate": "0001-01-01T00:00:00",
+    "StartDate": "2019-12-01T00:00:00",
+    "EndDate": "2019-12-22T00:00:00",
     "Cost": 0,
     "Companions": [
       "Amanda",
