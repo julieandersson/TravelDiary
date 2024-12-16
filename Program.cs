@@ -23,10 +23,10 @@ namespace TravelDiary
             {
                 Console.Clear();
                 Console.WriteLine("M I N   T R A V E L   D I A R Y"); // "Rubrik" som visas högst upp i menyn
-                Console.WriteLine("1 - Lägg till en resa till dagboken");
-                Console.WriteLine("2 - Ta bort en resa från dagboken");
-                Console.WriteLine("3 - Visa alla resor i dagboken");
-                Console.WriteLine("4 - Redigera en befintlig resa i dagboken");
+                Console.WriteLine("1 - Visa alla resor i dagboken");
+                Console.WriteLine("2 - Lägg till en resa i dagboken");
+                Console.WriteLine("3 - Redigera en befintlig resa i dagboken");
+                Console.WriteLine("4 - Ta bort en resa från dagboken");
                 Console.WriteLine("X - Avsluta programmet\n");
 
                 char input = Console.ReadKey(true).KeyChar;
@@ -34,16 +34,16 @@ namespace TravelDiary
                 switch (input)
                 {
                     case '1':
-                        AddTrip(); // Lägg till ny resa
+                        DisplayTrips(); // Visa alla resor
                         break;
                     case '2':
-                        DeleteTrip(); // Ta bort resa
+                        AddTrip(); // Lägg till en ny resa
                         break;
                     case '3':
-                        DisplayTrips(); // Visa resor
+                        EditTrip(); // Redigera en resa
                         break;
                     case '4':
-                        EditTrip(); // Redigera resor
+                        DeleteTrip(); // Radera en resa
                         break;
                     case 'X':
                     case 'x':
@@ -66,6 +66,8 @@ namespace TravelDiary
            // Exempel på att samla in data för en resa
            newTrip.Destination = PromptForInput("Ange resmål: ");
            newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
+            newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
+            newTrip.Companion = PromptForInput("Ange reskompis (eller skriv 'soloresa'): ");
 
            trips.Add(newTrip); 
 
@@ -94,6 +96,30 @@ namespace TravelDiary
 
             // Returnerar input när det är giltigt
             return input;
+        }
+
+        // Metod för att se så att användaren anger ett giltigt heltal för antal dagar
+        public static int PromptForIntInput(string prompt)
+        {
+             int value;
+             do
+             {
+                 // Inväntar användarens input
+                 Console.Write(prompt);
+                 string? input = Console.ReadLine();
+
+                // Försöker parsa input till ett heltal
+                if (!int.TryParse(input, out value) || value <= 0)
+                {
+                     Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal."); // Felmeddelande vid felaktigt input
+                }
+                 else
+                {
+                     break; // Om inmatningen är giltig, avsluta loopen
+                }
+            } while (true); // Fortsätter tills giltig input skrivs in
+
+            return value; // Returnerar heltalet när det är giltigt
         }
 
         // Läser in alla resor från JSON-filen
