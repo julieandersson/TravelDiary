@@ -264,10 +264,86 @@ namespace TravelDiary
         }
 
         public static void DisplayTrips()
-        {
-            Console.WriteLine("Visar alla resor...");
-            Console.ReadKey();
+       {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("A L L A   D I N A   R E S O R\n");
+
+                // Kontroll om det inte finns några resor i listan
+                if (trips.Count == 0)
+                {
+                    Console.WriteLine("Inga resor har lagts till i dagboken ännu.\n"); // Meddelade om listan är tom
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Visa alla destinationer med index
+                Console.WriteLine("Ange den resan du vill läsa mer om.");
+                Console.WriteLine("Ange X för att gå tillbaka till huvudmenyn.\n");
+
+                for (int i = 0; i < trips.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {trips[i].Destination}");
+                }
+
+                // Användarens input
+                Console.Write("\nDitt val: ");
+                string? input = Console.ReadLine();
+
+                // Gå tillbaka till huvudmenyn om användaren skriver "X" eller "x"
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    return;
+                }
+
+                // Försök att parsa input till ett giltigt index
+                if (int.TryParse(input, out int index) && index >= 0 && index < trips.Count)
+                {
+                    ShowTripDetails(index);
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val. Försök igen.");
+                    Console.ReadKey();
+                }
+            }
         }
+
+        // Metod för att visa detaljerad information om en specifik resa
+        public static void ShowTripDetails(int index)
+        {
+            Console.Clear();
+            Trip trip = trips[index]; // Hämtar den valda resan
+
+            Console.WriteLine("R E S E D E T A L J E R\n");
+            Console.WriteLine($"Resmål: {trip.Destination}");
+            Console.WriteLine($"Kontinent: {trip.Continent}");
+            Console.WriteLine($"Längd på resan: {trip.Duration} dagar");
+            Console.WriteLine($"Startdatum: {trip.StartDate:yyyy-MM-dd}");
+            Console.WriteLine($"Slutdatum: {trip.EndDate:yyyy-MM-dd}");
+            Console.WriteLine($"Totalkostnad: {trip.Cost} kr");
+
+            string companions = string.Join(", ", trip.Companions);
+
+            Console.WriteLine($"Reskompis(ar) eller soloresa: {companions}");
+            Console.WriteLine($"Typ av resa: {(trip.Type == TripType.Vacation ? "Semester" : "Jobbresa")}");
+
+            Console.WriteLine("\nAnge X för att gå tillbaka till alla resor.");
+            while (true)
+            {
+                string? input = Console.ReadLine();
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                break; // Gå tillbaka till listan med resor
+                }
+                else
+                {
+                Console.WriteLine("Ogiltigt val. Ange X för att gå tillbaka.");
+                }
+            }
+        }
+
 
         public static void EditTrip()
         {
