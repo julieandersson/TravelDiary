@@ -12,6 +12,7 @@ namespace TravelDiary
 
         static void Main(string[] args)
         {
+            LoadTrips();
             MainMenu();
         }
 
@@ -93,6 +94,19 @@ namespace TravelDiary
 
             // Returnerar input när det är giltigt
             return input;
+        }
+
+        // Läser in alla resor från JSON-filen
+        public static void LoadTrips()
+        { 
+            // Kollar om filen finns
+            if (File.Exists(tripsFile))
+            {
+               // Läser in all data från filen
+                string jsonData = File.ReadAllText(tripsFile);
+               // Deserialiserar JSON-datan tillbaka till en lista med alla resor
+                trips = JsonSerializer.Deserialize<List<Trip>>(jsonData) ?? new List<Trip>();
+            }
         }
 
         // Visar meddelande och väntar på att användaren ska trycka på valfri knapp
