@@ -27,11 +27,11 @@ namespace TravelDiary
                 Console.WriteLine("Hej och välkommen till resedagboken! Här kan du samla alla dina resor du gjort för att ");
                 Console.WriteLine("återuppleva fantastiska minnen och dokumentera dina äventyr på ett och samma ställe.\n");
                 Console.WriteLine("Gör ett val nedan för att ta dig vidare i din travel diary!\n");
-                Console.WriteLine("1 - Visa alla resor i dagboken");
-                Console.WriteLine("2 - Lägg till en resa i dagboken");
-                Console.WriteLine("3 - Redigera en befintlig resa i dagboken");
-                Console.WriteLine("4 - Ta bort en resa från dagboken");
-                Console.WriteLine("X - Avsluta programmet\n");
+                Console.WriteLine("[1] - Visa alla resor i dagboken");
+                Console.WriteLine("[2] - Lägg till en resa i dagboken");
+                Console.WriteLine("[3] - Redigera en befintlig resa i dagboken");
+                Console.WriteLine("[4] - Ta bort en resa från dagboken\n");
+                Console.WriteLine("[X] - Stäng resedagboken\n");
 
                 // Användarens menyval
                 char input = Console.ReadKey(true).KeyChar;
@@ -283,7 +283,8 @@ namespace TravelDiary
 
         public static void ExitProgram()
         {
-            Console.WriteLine("Avslutar programmet...");
+            Console.WriteLine("Stänger ner...");
+            Console.WriteLine("Tack för att du använde resedagboken! Välkommen tillbaka!");
             Environment.Exit(0);
         }
     }
