@@ -8,7 +8,7 @@ namespace TravelDiary
         public DateTime StartDate { get; set; }  // Startdatum
         public DateTime EndDate { get; set; }    // Slutdatum
         public decimal Cost { get; set; }        // Kostnad för resan
-        public string? Companion { get; set; }   // Reskompis eller soloresa
+        public List<string> Companions { get; set; } = new List<string>(); // Lista med reskompis(ar) (eller soloresa)
         public TripType Type { get; set; }       // Typ av resa (semester eller jobbresa)
     }
 

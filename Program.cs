@@ -9,7 +9,6 @@ namespace TravelDiary
         private static List<Trip> trips = new List<Trip>();
         private static string tripsFile = "travelDiary.json";
 
-
         static void Main(string[] args)
         {
             LoadTrips();
@@ -63,18 +62,47 @@ namespace TravelDiary
             Console.Clear();
             Trip newTrip = new Trip();
 
-           // Exempel på att samla in data för en resa
-           newTrip.Destination = PromptForInput("Ange resmål: ");
-           newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
+            // Exempel på att samla in data för en resa
+            newTrip.Destination = PromptForInput("Ange resmål: ");
+            newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
             newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
-            newTrip.Companion = PromptForInput("Ange reskompis (eller skriv 'soloresa'): ");
 
-           trips.Add(newTrip); 
+            Console.WriteLine("Ange reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
+            while (true)
+            {
+                string? companion = Console.ReadLine();
 
-           SaveTrips();
+                // Om användaren trycker Enter utan input, avsluta insamling av data
+                if (string.IsNullOrEmpty(companion) && newTrip.Companions.Count > 0)
+                {
+                    break; // Avsluta loopen
+                }
 
-           Console.WriteLine("Resan har sparats!");
-           ReturnToMenu();
+                // Om användaren skriver "soloresa", lägg till det som enda värde och avsluta
+                if (!string.IsNullOrEmpty(companion) && companion.Equals("soloresa", StringComparison.OrdinalIgnoreCase))
+                {
+                    newTrip.Companions.Clear(); // Säkerställ att listan är tom
+                    newTrip.Companions.Add("Soloresa");
+                    break; // Avsluta loopen
+                }
+
+                // Kontrollera att input inte är tomt
+                if (!string.IsNullOrEmpty(companion))
+                {
+                    newTrip.Companions.Add(companion);
+                    Console.WriteLine("Ange fler reskompisar eller tryck Enter för att avsluta:"); // Meddelande som visas efter varje angiven reskompis
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltig inmatning. Ange minst en reskompis eller skriv 'soloresa'."); // Felmeddelande
+                }
+            }
+
+            trips.Add(newTrip);
+            SaveTrips();
+
+            Console.WriteLine("Resan har sparats!");
+            ReturnToMenu();
         }
 
         // Metod för att se så att inget fält är tomt
@@ -83,54 +111,46 @@ namespace TravelDiary
             string? input;
             do
             {
-                // Inväntar användarens input
                 Console.Write(prompt);
                 input = Console.ReadLine();
 
-                // Om input är tomt, be användaren försöka igen 
                 if (string.IsNullOrEmpty(input))
                 {
                     Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
                 }
-            } while (string.IsNullOrEmpty(input)); // Fortsätter tills att input inte är tomt
+            } while (string.IsNullOrEmpty(input));
 
-            // Returnerar input när det är giltigt
             return input;
         }
 
         // Metod för att se så att användaren anger ett giltigt heltal för antal dagar
         public static int PromptForIntInput(string prompt)
         {
-             int value;
-             do
-             {
-                 // Inväntar användarens input
-                 Console.Write(prompt);
-                 string? input = Console.ReadLine();
+            int value;
+            do
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine();
 
-                // Försöker parsa input till ett heltal
                 if (!int.TryParse(input, out value) || value <= 0)
                 {
-                     Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal."); // Felmeddelande vid felaktigt input
+                    Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal.");
                 }
-                 else
+                else
                 {
-                     break; // Om inmatningen är giltig, avsluta loopen
+                    break;
                 }
-            } while (true); // Fortsätter tills giltig input skrivs in
+            } while (true);
 
-            return value; // Returnerar heltalet när det är giltigt
+            return value;
         }
 
         // Läser in alla resor från JSON-filen
         public static void LoadTrips()
-        { 
-            // Kollar om filen finns
+        {
             if (File.Exists(tripsFile))
             {
-               // Läser in all data från filen
                 string jsonData = File.ReadAllText(tripsFile);
-               // Deserialiserar JSON-datan tillbaka till en lista med alla resor
                 trips = JsonSerializer.Deserialize<List<Trip>>(jsonData) ?? new List<Trip>();
             }
         }
@@ -139,15 +159,13 @@ namespace TravelDiary
         public static void ReturnToMenu()
         {
             Console.WriteLine("\nTryck på valfri knapp för att återvända till menyn.");
-            Console.ReadKey(); // Väntar på knapptryckning
-        }  
+            Console.ReadKey();
+        }
 
         // Sparar alla resor till en JSON-fil
         public static void SaveTrips()
-        { 
-            // Serialiserar listan med inlägg till JSON-format
-            string jsonData = JsonSerializer.Serialize(trips, new JsonSerializerOptions { WriteIndented = true});
-            // Skriver ut JSON-datan till filen "travelDiary.json"
+        {
+            string jsonData = JsonSerializer.Serialize(trips, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(tripsFile, jsonData);
         }
 
