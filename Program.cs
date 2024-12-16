@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -12,8 +13,8 @@ namespace TravelDiary
 
         static void Main(string[] args)
         {
-            LoadTrips();
-            MainMenu();
+            LoadTrips(); // Laddar in befintliga resor från JSON-fil
+            MainMenu();  // Visar huvudmenyn
         }
 
         // Huvudmeny med olika val, visas när program startas
@@ -32,6 +33,7 @@ namespace TravelDiary
                 Console.WriteLine("4 - Ta bort en resa från dagboken");
                 Console.WriteLine("X - Avsluta programmet\n");
 
+                // Användarens menyval
                 char input = Console.ReadKey(true).KeyChar;
 
                 switch (input)
@@ -66,7 +68,7 @@ namespace TravelDiary
             Console.Clear();
             Trip newTrip = new Trip();
 
-            // Exempel på att samla in data för en resa
+            // Samlar in all information för den nya resan
             newTrip.Destination = PromptForInput("Ange resmål: ");
             newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
             newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
@@ -74,6 +76,7 @@ namespace TravelDiary
             newTrip.EndDate = PromptForDateInput("Ange slutdatum för resan (yyyy-mm-dd): ");
             newTrip.Cost = PromptForDecimalInput("Ange kostnad för resan (SEK): ");
 
+            // Samlar in reskompisar
             Console.WriteLine("Ange reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
             while (true)
             {
@@ -97,7 +100,7 @@ namespace TravelDiary
                 if (!string.IsNullOrEmpty(companion) && Regex.IsMatch(companion, @"^[a-zA-ZåäöÅÄÖ]{2,}$"))
                 {
                     newTrip.Companions.Add(companion);
-                    Console.WriteLine("Ange fler reskompisar eller tryck Enter för att avsluta:"); // Meddelande som visas efter varje angiven reskompis
+                    Console.WriteLine("Ange fler reskompisar eller tryck Enter för att avsluta:"); // Meddelande som visas efter varje angiven resekompis
                 }
                 else
                 {
@@ -105,6 +108,10 @@ namespace TravelDiary
                 }
             }
 
+            // Fråga om typ av resa (semester eller jobbresa)
+            newTrip.Type = PromptForTripType("Ange typ av resa (Semester eller Jobbresa): ");
+
+            // Lägg till resan i listan och spara
             trips.Add(newTrip);
             SaveTrips();
 
@@ -112,7 +119,7 @@ namespace TravelDiary
             ReturnToMenu();
         }
 
-        // Metod för att se så att inget fält är tomt
+        // Metod för string-input (för destination och kontinent)
         public static string PromptForInput(string prompt)
         {
             string? input;
@@ -130,7 +137,7 @@ namespace TravelDiary
             return input;
         }
 
-        // Metod för att se så att användaren anger ett giltigt heltal för antal dagar
+        // Metod för heltalsinput så att användaren anger ett giltgt heltal (för antal dagar)
         public static int PromptForIntInput(string prompt)
         {
             int value;
@@ -152,6 +159,7 @@ namespace TravelDiary
             return value;
         }
 
+        // Metod för giltigt datum (för start och slutdatum av resa)
         public static DateTime PromptForDateInput(string prompt)
         {
             DateTime dateValue;
@@ -164,13 +172,10 @@ namespace TravelDiary
                 if (!DateTime.TryParseExact(input, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
                 {
                     Console.WriteLine("Ogiltigt datumformat. Ange datum i formatet yyyy-MM-dd.");
-                    continue;
                 }
                 else if (dateValue >= DateTime.Today) // Kontrollera om datumet är i framtiden
                 {
                     Console.WriteLine("Datumet kan inte vara i framtiden. Försök igen.");
-                    continue;
-
                 }
                 else
                 {
@@ -181,6 +186,7 @@ namespace TravelDiary
             return dateValue; // Returnera det giltiga datumet
         }
 
+        // Metod för decimalvärde (för kostnad av resan)
         public static decimal PromptForDecimalInput(string prompt)
         {
             decimal value;
@@ -200,37 +206,60 @@ namespace TravelDiary
                 }
             } while (true);
 
-            return value; // Returnera det giltiga decimaltalet
-            
+            return value; // Returnerar det giltiga decimaltalet
         }
 
-        // Läser in alla resor från JSON-filen
+        // Metod för att låta användaren välja typ av resa
+        public static TripType PromptForTripType(string prompt)
+        {
+            var validChoices = new Dictionary<string, TripType>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "semester", TripType.Vacation },
+                { "jobbresa", TripType.Business }
+            };
+
+            while (true)
+            {
+                Console.WriteLine(prompt);
+                Console.WriteLine("- semester");
+                Console.WriteLine("- jobbresa");
+                Console.Write("Ditt val: ");
+                string? input = Console.ReadLine();
+
+                if (input != null && validChoices.TryGetValue(input, out TripType tripType))
+                {
+                    return tripType;
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val. Vänligen ange 'semester' eller 'jobbresa'.");
+                }
+            }
+        }
+
+        // Laddar in alla resor från jsonfilen
         public static void LoadTrips()
         {
             if (File.Exists(tripsFile))
             {
+                var options = new JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };
                 string jsonData = File.ReadAllText(tripsFile);
-                trips = JsonSerializer.Deserialize<List<Trip>>(jsonData) ?? new List<Trip>();
+                trips = JsonSerializer.Deserialize<List<Trip>>(jsonData, options) ?? new List<Trip>();
             }
         }
 
-        // Visar meddelande och väntar på att användaren ska trycka på valfri knapp
-        public static void ReturnToMenu()
-        {
-            Console.WriteLine("\nTryck på valfri knapp för att återvända till menyn.");
-            Console.ReadKey();
-        }
-
-        // Sparar alla resor till en JSON-fil
+        // Spara resor till fil
         public static void SaveTrips()
         {
-            string jsonData = JsonSerializer.Serialize(trips, new JsonSerializerOptions { WriteIndented = true });
+            var options = new JsonSerializerOptions { WriteIndented = true, Converters = { new JsonStringEnumConverter() } };
+            string jsonData = JsonSerializer.Serialize(trips, options);
             File.WriteAllText(tripsFile, jsonData);
         }
 
-        public static void DeleteTrip()
+        // Visar meddelande och väntar på knapptryckning
+        public static void ReturnToMenu()
         {
-            Console.WriteLine("Tar bort en resa...");
+            Console.WriteLine("\nTryck på valfri knapp för att återvända till menyn.");
             Console.ReadKey();
         }
 
@@ -243,6 +272,12 @@ namespace TravelDiary
         public static void EditTrip()
         {
             Console.WriteLine("Redigerar en resa...");
+            Console.ReadKey();
+        }
+
+        public static void DeleteTrip()
+        {
+            Console.WriteLine("Tar bort en resa...");
             Console.ReadKey();
         }
 

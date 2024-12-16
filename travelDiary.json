@@ -3,25 +3,25 @@
     "Destination": "Thailand",
     "Continent": "Asien",
     "Duration": 21,
-    "StartDate": "2019-12-01T00:00:00",
-    "EndDate": "2019-12-22T00:00:00",
-    "Cost": 0,
+    "StartDate": "2020-12-01T00:00:00",
+    "EndDate": "2020-12-21T00:00:00",
+    "Cost": 22000,
     "Companions": [
       "Amanda",
       "Alicia"
     ],
-    "Type": 0
+    "Type": "Vacation"
   },
   {
     "Destination": "Italien",
-    "Continent": "test",
-    "Duration": 5,
-    "StartDate": "2024-12-01T00:00:00",
-    "EndDate": "2024-12-10T00:00:00",
-    "Cost": 10000,
+    "Continent": "Europa",
+    "Duration": 7,
+    "StartDate": "2022-10-02T00:00:00",
+    "EndDate": "2022-10-09T00:00:00",
+    "Cost": 15000,
     "Companions": [
       "Soloresa"
     ],
-    "Type": 0
+    "Type": "Vacation"
   }
 ]

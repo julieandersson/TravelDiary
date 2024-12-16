@@ -15,7 +15,7 @@ namespace TravelDiary
         // Enum för typ av resa
     public enum TripType
     {
-        Vacation,
-        Business
+        Vacation, // Semester
+        Business // Jobbresa
     }
 }
