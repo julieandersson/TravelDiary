@@ -22,7 +22,10 @@ namespace TravelDiary
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("M I N   T R A V E L   D I A R Y"); // "Rubrik" som visas högst upp i menyn
+                Console.WriteLine("T R A V E L   D I A R Y\n"); // "Rubrik" som visas högst upp i menyn
+                Console.WriteLine("Hej och välkommen till resedagboken! Här kan du samla alla dina resor du gjort för att ");
+                Console.WriteLine("återuppleva fantastiska minnen och dokumentera dina äventyr på ett och samma ställe.\n");
+                Console.WriteLine("Gör ett val nedan för att ta dig vidare i din travel diary!\n");
                 Console.WriteLine("1 - Visa alla resor i dagboken");
                 Console.WriteLine("2 - Lägg till en resa i dagboken");
                 Console.WriteLine("3 - Redigera en befintlig resa i dagboken");
