@@ -69,8 +69,8 @@ namespace TravelDiary
             Trip newTrip = new Trip();
 
             // Samlar in all information för den nya resan
-            newTrip.Destination = PromptForInput("Ange resmål: ");
-            newTrip.Continent = PromptForInput("Ange kontinent (t.ex. Europa, Asien): ");
+            newTrip.Destination = PromptForInput("Ange resmål: ", "destination");
+            newTrip.Continent = PromptForInput("Ange kontinent (Afrika, Antarktis, Asien, Europa, Nordamerika, Oceanen, Sydamerika): ", "continent");
             newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
             newTrip.StartDate = PromptForDateInput("Ange startdatum för resan (yyyy-mm-dd): ");
             newTrip.EndDate = PromptForDateInput("Ange slutdatum för resan (yyyy-mm-dd): ");
@@ -119,22 +119,51 @@ namespace TravelDiary
             ReturnToMenu();
         }
 
-        // Metod för string-input (för destination och kontinent)
-        public static string PromptForInput(string prompt)
-        {
-            string? input;
-            do
-            {
+        // Metod för string-input (för destination och kontinent) med validering
+        public static string PromptForInput(string prompt, string validationType = "", bool allowEmpty = false)
+        { 
+              // Lista över tillåtna kontinenter
+              string[] validContinents = { "Afrika", "Antarktis", "Asien", "Europa", "Nordamerika", "Oceanen", "Sydamerika" };
+
+              while (true)
+              {
                 Console.Write(prompt);
-                input = Console.ReadLine();
+                string? input = Console.ReadLine()?.Trim();
 
-                if (string.IsNullOrEmpty(input))
+                // Tillåt tom input om allowEmpty är true
+                if (allowEmpty && string.IsNullOrEmpty(input))
                 {
-                    Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
+                    return input ?? "";
                 }
-            } while (string.IsNullOrEmpty(input));
 
-            return input;
+                // Validering för "destination" (minst 3 tecken och endast bokstäver)
+                if (validationType.Equals("destination", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[a-zA-ZåäöÅÄÖ\s]{3,}$"))
+                    {
+                        return input; // Input är giltig
+                    }
+                    Console.WriteLine("Ogiltig inmatning. Resmålet måste vara minst 3 bokstäver och får endast innehålla bokstäver.");
+                }
+                // Validering för "continent" (måste matcha fördefinierade kontinenter)
+                else if (validationType.Equals("continent", StringComparison.OrdinalIgnoreCase))
+                {
+                   if (!string.IsNullOrEmpty(input) && validContinents.Contains(input, StringComparer.OrdinalIgnoreCase))
+                   {
+                       return input; // Input är giltig
+                   }
+                   Console.WriteLine("Ogiltig inmatning.");
+                }
+                // Generell validering för andra fall
+                else if (!string.IsNullOrEmpty(input))
+                {
+                   return input; // Returnera input om ingen specifik validering krävs
+                }
+                else
+                {
+                   Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
+                }
+             }
         }
 
         // Metod för heltalsinput så att användaren anger ett giltgt heltal (för antal dagar)
@@ -343,7 +372,6 @@ namespace TravelDiary
                 }
             }
         }
-
 
         public static void EditTrip()
         {
