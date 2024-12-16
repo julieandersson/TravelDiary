@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace TravelDiary
 {
@@ -86,15 +87,15 @@ namespace TravelDiary
                     break; // Avsluta loopen
                 }
 
-                // Kontrollera att input inte är tomt
-                if (!string.IsNullOrEmpty(companion))
+                // Kontrollera att input endast innehåller bokstäver och är minst 2 tecken
+                if (!string.IsNullOrEmpty(companion) && Regex.IsMatch(companion, @"^[a-zA-ZåäöÅÄÖ]{2,}$"))
                 {
                     newTrip.Companions.Add(companion);
                     Console.WriteLine("Ange fler reskompisar eller tryck Enter för att avsluta:"); // Meddelande som visas efter varje angiven reskompis
                 }
                 else
                 {
-                    Console.WriteLine("Ogiltig inmatning. Ange minst en reskompis eller skriv 'soloresa'."); // Felmeddelande
+                    Console.WriteLine("Ogiltig inmatning. Namnet måste innehålla minst 2 bokstäver och endast bokstäver."); // Felmeddelande
                 }
             }
 
