@@ -496,11 +496,97 @@ namespace TravelDiary
             }
         }
 
+        // Metod för att ta bort en resa
         public static void DeleteTrip()
         {
-            Console.WriteLine("Tar bort en resa...");
-            Console.ReadKey();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("T A   B O R T   E N   R E S A\n");
+
+                // Kontrollera om det finns några resor att ta bort
+                if (trips.Count == 0)
+                {
+                    Console.WriteLine("Det finns inga resor att ta bort."); // Meddelande som visas om det inte finns några resor
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Visa alla resor med index, användaren kan trycka x för att gå tillbaka
+                Console.WriteLine("Ange numret på resan du vill ta bort.");
+                Console.WriteLine("Tryck X för att återgå till huvudmenyn.\n");
+                for (int i = 0; i < trips.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {trips[i].Destination}");
+                }
+
+                // Be användaren ange ett val
+                Console.Write("\nSkriv ditt val: ");
+                string? input = Console.ReadLine()?.Trim();
+
+                // Hantera X för att återgå till huvudmenyn
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Kontrollera att input är en giltig siffra
+                if (int.TryParse(input, out int index))
+                {
+                    if (index >= 0 && index < trips.Count) // Kontrollera att index finns i listan
+                    {
+                        // en extra bekräftelse (loop) för att ta bort resan
+                        while (true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Är du säker på att du vill ta bort resan till \"{trips[index].Destination}\"? (Ja/Nej)");
+                            string confirmation = Console.ReadLine()?.Trim().ToUpper() ?? "";
+
+                            // Om användaren skriver Ja, ta bort resan
+                            if (confirmation == "JA")
+                            {
+                                trips.RemoveAt(index);
+                                SaveTrips();
+                                Console.WriteLine("\nResan har tagits bort!");
+                                ReturnToMenu();
+                                return;
+                            }
+                            
+                            // Om användaren skriver Nej, avbryt och ta inte bort
+                            else if (confirmation == "NEJ")
+                            {
+                                Console.WriteLine("\nÅtgärden avbröts. Ingen resa har tagits bort.");
+                                ReturnToMenu();
+                                return;
+                            }
+                            else
+                            {
+                                // Felmeddelande för ogiltig input, användaren kan endast skriva in Ja eller Nej
+                                Console.WriteLine("Ogiltig inmatning. Ange antingen Ja för att ta bort eller Nej för att avbryta.");
+                                Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                                Console.ReadKey();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Felmeddelande om index som användaren anger inte finns i listan
+                        Console.WriteLine($"Numret {index} finns inte i listan.");
+                        Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                        // Felmeddelande för ogiltig input (om användaren inte anger en siffra)
+                        Console.WriteLine("Ogiltig inmatning. Ange ett giltigt nummer från listan.");
+                        Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ReadKey();
+                }
+            }
         }
+
 
         public static void ExitProgram()
         {
