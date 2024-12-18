@@ -66,18 +66,19 @@ namespace TravelDiary
         public static void AddTrip()
         {
             Console.Clear();
+            Console.WriteLine("L Ä G G   T I L L   E N   R E S A\n");
             Trip newTrip = new Trip();
 
             // Samlar in all information för den nya resan
-            newTrip.Destination = PromptForInput("Ange resmål: ", "destination");
-            newTrip.Continent = PromptForInput("Ange kontinent (Afrika, Antarktis, Asien, Europa, Nordamerika, Oceanen, Sydamerika): ", "continent");
-            newTrip.Duration = PromptForIntInput("Ange antal dagar: ");
-            newTrip.StartDate = PromptForDateInput("Ange startdatum för resan (yyyy-mm-dd): ");
-            newTrip.EndDate = PromptForDateInput("Ange slutdatum för resan (yyyy-mm-dd): ");
-            newTrip.Cost = PromptForDecimalInput("Ange kostnad för resan (SEK): ");
+            newTrip.Destination = PromptForInput("\nAnge resmål: ", "destination");
+            newTrip.Continent = PromptForInput("\nAnge kontinent: ", "continent");
+            newTrip.Duration = PromptForIntInput("\nAnge antal dagar: ");
+            newTrip.StartDate = PromptForDateInput("\nAnge startdatum för resan (yyyy-mm-dd): ");
+            newTrip.EndDate = PromptForDateInput("\nAnge slutdatum för resan (yyyy-mm-dd): ");
+            newTrip.Cost = PromptForDecimalInput("\nAnge kostnad för resan (SEK): ");
 
             // Samlar in reskompisar
-            Console.WriteLine("Ange reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
+            Console.WriteLine("\nAnge reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
             while (true)
             {
                 string? companion = Console.ReadLine();
@@ -109,31 +110,42 @@ namespace TravelDiary
             }
 
             // Fråga om typ av resa (semester eller jobbresa)
-            newTrip.Type = PromptForTripType("Ange typ av resa (Semester eller Jobbresa): ");
+            newTrip.Type = PromptForTripType("\nAnge typ av resa (Semester eller Jobbresa): ");
 
             // Lägg till resan i listan och spara
             trips.Add(newTrip);
             SaveTrips();
 
-            Console.WriteLine("Resan har sparats!");
+            Console.Clear();
+            Console.WriteLine("\nResan har sparats!");
             ReturnToMenu();
         }
 
         // Metod för string-input (för destination och kontinent) med validering
-        public static string PromptForInput(string prompt, string validationType = "", bool allowEmpty = false)
-        { 
-              // Lista över tillåtna kontinenter
-              string[] validContinents = { "Afrika", "Antarktis", "Asien", "Europa", "Nordamerika", "Oceanen", "Sydamerika" };
+        public static string PromptForInput(string prompt, string validationType = "", string? defaultValue = null)
+        {
+            // Lista över tillåtna kontinenter
+            string[] validContinents = { "Afrika", "Antarktis", "Asien", "Europa", "Nordamerika", "Oceanen", "Sydamerika" };
 
-              while (true)
-              {
-                Console.Write(prompt);
+            while (true)
+            {
+                // Visa prompten med nuvarande värde om det finns något
+                if (defaultValue != null)
+                {
+                    Console.Write($"{prompt} (nuvarande: {defaultValue}): ");
+                }
+                else
+                {
+                    Console.Write($"{prompt} ");
+                }
+
+                // Läser in användarens input
                 string? input = Console.ReadLine()?.Trim();
 
-                // Tillåt tom input om allowEmpty är true
-                if (allowEmpty && string.IsNullOrEmpty(input))
+                // Om ett standardvärde finns och användaren trycker enter (input är tom), behåll nuvarande värde (gäller vid redigering av resa)
+                if (!string.IsNullOrEmpty(defaultValue) && string.IsNullOrEmpty(input))
                 {
-                    return input ?? "";
+                    return defaultValue; // Behåll det nuvarande värdet
                 }
 
                 // Validering för "destination" (minst 3 tecken och endast bokstäver)
@@ -141,102 +153,150 @@ namespace TravelDiary
                 {
                     if (!string.IsNullOrEmpty(input) && Regex.IsMatch(input, @"^[a-zA-ZåäöÅÄÖ\s]{3,}$"))
                     {
-                        return input; // Input är giltig
+                        return input; // om input är giltig
                     }
+                    // Felmeddelande vid ogiltig input
                     Console.WriteLine("Ogiltig inmatning. Resmålet måste vara minst 3 bokstäver och får endast innehålla bokstäver.");
                 }
-                // Validering för "continent" (måste matcha fördefinierade kontinenter)
+                // Validering för "continent" (måste matcha de fördefinierade kontinenterna)
                 else if (validationType.Equals("continent", StringComparison.OrdinalIgnoreCase))
                 {
-                   if (!string.IsNullOrEmpty(input) && validContinents.Contains(input, StringComparer.OrdinalIgnoreCase))
-                   {
-                       return input; // Input är giltig
-                   }
-                   Console.WriteLine("Ogiltig inmatning.");
+                    if (!string.IsNullOrEmpty(input) && validContinents.Contains(input, StringComparer.OrdinalIgnoreCase))
+                    {
+                        return input; // om input är giltig
+                    }
+                    // Felmeddelande vid ogiltig input
+                    Console.WriteLine("Ogiltig inmatning. Ange Afrika, Antarktis, Asien, Europa, Nordamerika, Oceanen eller Sydamerika.");
                 }
                 // Generell validering för andra fall
                 else if (!string.IsNullOrEmpty(input))
                 {
-                   return input; // Returnera input om ingen specifik validering krävs
+                    return input;
                 }
                 else
                 {
-                   Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
+                    // Felmeddelande om input är tomt
+                    Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
                 }
-             }
+            }
         }
 
-        // Metod för heltalsinput så att användaren anger ett giltgt heltal (för antal dagar)
-        public static int PromptForIntInput(string prompt)
+        // Metod för heltalsinput så att användaren anger ett giltigt heltal för antal dagar (med eller utan standardvärde)
+        public static int PromptForIntInput(string prompt, int? defaultValue = null)
         {
-            int value;
-            do
+            while (true)
             {
-                Console.Write(prompt);
-                string? input = Console.ReadLine();
-
-                if (!int.TryParse(input, out value) || value <= 0)
+                // Visa prompten och inkludera nuvarande värde om det finns något
+                if (defaultValue.HasValue)
                 {
-                    Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal.");
+                    Console.Write($"{prompt} (nuvarande: {defaultValue}): ");
                 }
                 else
                 {
-                    break;
+                    Console.Write(prompt);
                 }
-            } while (true);
 
-            return value;
+                // Läser in användarens input
+                string? input = Console.ReadLine()?.Trim();
+
+                // Om ett standardvärde finns och användaren trycker enter (input är tom), behåll nuvarande värde (gäller vid redigering av resa)
+                if (defaultValue.HasValue && string.IsNullOrEmpty(input))
+                {
+                    return defaultValue.Value;
+                }
+
+                // Försök att tolka input som ett positivt heltal
+                if (int.TryParse(input, out int value) && value > 0)
+                {
+                    return value; // returnera giltigt värde
+                }
+
+                // Felmeddelande för ogiltig input
+                Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal.");
+            }
         }
 
-        // Metod för giltigt datum (för start och slutdatum av resa)
-        public static DateTime PromptForDateInput(string prompt)
+        // Metod för datum-input med validering (med eller utan standardvärde)
+        public static DateTime PromptForDateInput(string prompt, DateTime? defaultValue = null)
         {
-            DateTime dateValue;
-            do
+            while (true)
             {
-                Console.Write(prompt);
-                string? input = Console.ReadLine();
+                // Visa prompt med nuvarande värde om det finns något
+                if (defaultValue.HasValue)
+                {
+                    Console.Write($"{prompt} (nuvarande: {defaultValue:yyyy-MM-dd}): ");
+                }
+                else
+                {
+                    // annars visa bara prompten
+                    Console.Write(prompt);
+                }
+
+                // Läser input från användaren
+                string? input = Console.ReadLine()?.Trim();
+
+                // Om ett standardvärde finns och användaren trycker enter (input är tom), behåll nuvarande värde (gäller vid redigering av resa)
+                if (defaultValue.HasValue && string.IsNullOrEmpty(input))
+                {
+                    return defaultValue.Value; // behåll det nuvarande värdet
+                }
 
                 // Försök att parsa input till ett giltigt datum
-                if (!DateTime.TryParseExact(input, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                if (DateTime.TryParseExact(input, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
                 {
-                    Console.WriteLine("Ogiltigt datumformat. Ange datum i formatet yyyy-MM-dd.");
-                }
-                else if (dateValue >= DateTime.Today) // Kontrollera om datumet är i framtiden
-                {
-                    Console.WriteLine("Datumet kan inte vara i framtiden. Försök igen.");
-                }
-                else
-                {
-                    break; // Om input är giltigt, avsluta loopen
-                }
-            } while (true);
+                    // Kontrollera så datumet inte är i framtiden
+                    if (dateValue >= DateTime.Today)
+                    {
+                        Console.WriteLine("Datumet kan inte vara i framtiden. Försök igen.");
+                        continue; // be användaren om nytt input 
+                    }
 
-            return dateValue; // Returnera det giltiga datumet
+                    return dateValue; // returnera det giltiga datumet
+                }
+
+                // Felmeddelande för ogiltig input
+                Console.WriteLine("Ogiltigt datumformat. Ange datum i formatet yyyy-MM-dd.");
+            }
         }
 
-        // Metod för decimalvärde (för kostnad av resan)
-        public static decimal PromptForDecimalInput(string prompt)
+
+
+        // Metod för decimal-input för kostnad av resan med validering (med eller utan standardvärde)
+        public static decimal PromptForDecimalInput(string prompt, decimal? defaultValue = null)
         {
-            decimal value;
-            do
+            while (true)
             {
-                Console.Write(prompt);
-                string? input = Console.ReadLine();
-
-                // Kontrollera att input endast innehåller siffror och kan konverteras till ett decimaltal
-                if (string.IsNullOrEmpty(input) || !decimal.TryParse(input, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out value) || value < 0)
+                // Visa prompt med nuvarande värde om det finns något
+                if (defaultValue.HasValue)
                 {
-                   Console.WriteLine("Ogiltig inmatning. Ange endast positiva siffror (exempel: 20000). Försök igen."); // Felmeddelande vid ogiltig input
+                    Console.Write($"{prompt} (nuvarande: {defaultValue}): ");
                 }
                 else
                 {
-                   break; // Om input är giltig, avsluta loopen
+                    // annars visa bara prompten
+                    Console.Write(prompt);
                 }
-            } while (true);
 
-            return value; // Returnerar det giltiga decimaltalet
+                // läser in input från användaren
+                string? input = Console.ReadLine()?.Trim();
+
+                // Om ett standardvärde finns och användaren trycker enter (input är tom), behåll nuvarande värde (gäller vid redigering av resa)
+                if (defaultValue.HasValue && string.IsNullOrEmpty(input))
+                {
+                    return defaultValue.Value; // behåll det nuvarande värdet
+                }
+
+                // Försök att tolka inmatningen som ett giltigt decimaltal
+                if (decimal.TryParse(input, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value) && value >= 0)
+                {
+                    return value; // returnera giltigt decimaltal
+                }
+
+                // Felmeddelande för ogiltig input
+                Console.WriteLine("Ogiltig inmatning. Ange endast positiva siffror (exempel: 20000).");
+            }
         }
+
 
         // Metod för att låta användaren välja typ av resa
         public static TripType PromptForTripType(string prompt)
@@ -250,9 +310,7 @@ namespace TravelDiary
             while (true)
             {
                 Console.WriteLine(prompt);
-                Console.WriteLine("- semester");
-                Console.WriteLine("- jobbresa");
-                Console.Write("Ditt val: ");
+                Console.Write("Skriv ditt val: ");
                 string? input = Console.ReadLine();
 
                 if (input != null && validChoices.TryGetValue(input, out TripType tripType))
@@ -317,7 +375,7 @@ namespace TravelDiary
                 }
 
                 // Användarens input
-                Console.Write("\nDitt val: ");
+                Console.Write("\nSkriv ditt val: ");
                 string? input = Console.ReadLine();
 
                 // Gå tillbaka till huvudmenyn om användaren skriver "X" eller "x"
@@ -333,7 +391,8 @@ namespace TravelDiary
                 }
                 else
                 {
-                    Console.WriteLine("Ogiltigt val. Försök igen.");
+                    Console.WriteLine("Ogiltigt val.");
+                    Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
                     Console.ReadKey();
                 }
             }
@@ -373,10 +432,68 @@ namespace TravelDiary
             }
         }
 
+        // Metod för att redigera en resa med samma validering som för addTrip
         public static void EditTrip()
         {
-            Console.WriteLine("Redigerar en resa...");
-            Console.ReadKey();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("R E D I G E R A   E N   R E S A\n");
+
+                // Kontrollera om det finns några resor att redigera
+                if (trips.Count == 0)
+                {
+                    Console.WriteLine("Det finns inga resor att redigera.\n"); // meddelande som visas om det inte finns några resor
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Om resorr finns, visa alla resor med index
+                for (int i = 0; i < trips.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {trips[i].Destination}");
+                }
+
+                // Ber användaren välja en resa att redigera, eller gå tillbaka till huvudmenyn
+                Console.Write("\nAnge numret på resan du vill redigera.\n");
+                Console.Write("Tryck X för att gå tillbaka till huvudmenyn.\n");
+                string? input = Console.ReadLine();
+
+                // Gå tillbaka till huvudmenyn om användaren skriver x
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true) return;
+
+                // Kontrollera så att användaren anger ett giltigt index
+                if (int.TryParse(input, out int index) && index >= 0 && index < trips.Count)
+                {
+                    // Redigerar vald resa
+                    Trip selectedTrip = trips[index];
+
+                    Console.Clear();
+                    Console.WriteLine($"Redigerar resan: {selectedTrip.Destination}\n");
+
+                    // Skapar ny information om resan, eller behåll befintlig info
+                    selectedTrip.Destination = PromptForInput("\nAnge nytt resmål eller tryck enter för att behålla nuvarande", "destination", selectedTrip.Destination ?? "");
+                    selectedTrip.Continent = PromptForInput("\nAnge ny kontinent eller tryck enter för att behålla nuvarande", "continent", selectedTrip.Continent ?? "");
+                    selectedTrip.Duration = PromptForIntInput($"\nAnge nya antal dagar eller tryck enter för att behålla nuvarande", selectedTrip.Duration);
+                    selectedTrip.StartDate = PromptForDateInput($"\nAnge nytt startdatum eller tryck enter för att behålla nuvarande", selectedTrip.StartDate);
+                    selectedTrip.EndDate = PromptForDateInput($"\nAnge nytt slutdatum eller tryck enter för att behålla nuvarande", selectedTrip.EndDate);
+                    selectedTrip.Cost = PromptForDecimalInput($"\nAnge ny kostnad eller tryck enter för att behålla nuvarande", selectedTrip.Cost);
+
+                    // Spara den uppdaterade resan och visa meddelande
+                    SaveTrips();
+                    Console.Clear();
+                    Console.WriteLine("\nResan har uppdaterats!");
+                    ReturnToMenu();
+                    return;
+                }
+                else
+                {
+                    // Felmeddelande som visas vid ogiltigt val
+                    Console.WriteLine("Ogiltigt val.");
+                    Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                    Console.ReadKey();
+                }
+            }
         }
 
         public static void DeleteTrip()
@@ -387,8 +504,9 @@ namespace TravelDiary
 
         public static void ExitProgram()
         {
-            Console.WriteLine("Stänger ner...");
-            Console.WriteLine("Tack för att du använde resedagboken! Välkommen tillbaka!");
+            Console.Clear();
+            Console.WriteLine("Stänger ner...\n");
+            Console.WriteLine("Tack för att du använde resedagboken! Välkommen tillbaka!\n");
             Environment.Exit(0);
         }
     }

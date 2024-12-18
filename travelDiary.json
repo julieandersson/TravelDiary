@@ -1,0 +1,15 @@
+[
+  {
+    "Destination": "Italien",
+    "Continent": "Europa",
+    "Duration": 5,
+    "StartDate": "2021-10-01T00:00:00",
+    "EndDate": "2021-10-06T00:00:00",
+    "Cost": 10000,
+    "Companions": [
+      "Josse",
+      "Ida"
+    ],
+    "Type": "Vacation"
+  }
+]
