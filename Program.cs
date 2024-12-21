@@ -8,8 +8,15 @@ namespace TravelDiary
 {
     class Program
     {
+        // Lista för att lagra alla nya resor i dagboken
         private static List<Trip> trips = new List<Trip>();
         private static string tripsFile = "travelDiary.json";
+
+
+        // Lista för att lagra alla pack-listor med de saker som ska packas ned
+        private static List<PackingList> packingLists = new List<PackingList>();
+        private static string packingListsFile = "packingLists.json";
+
 
         static void Main(string[] args)
         {
