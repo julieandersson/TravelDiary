@@ -21,6 +21,7 @@ namespace TravelDiary
         static void Main(string[] args)
         {
             LoadTrips(); // Laddar in befintliga resor från JSON-fil
+            LoadPackingLists(); // Laddar packlistor
             MainMenu();  // Visar huvudmenyn
         }
 
@@ -512,25 +513,6 @@ namespace TravelDiary
 
         }
 
-        // metod för att skapa en ny packlista
-        public static void CreatePackingList()
-        {
-            Console.WriteLine("Skapar en packlista...");
-            Console.ReadKey();
-        }
-
-        public static void AddPackingItems(PackingList packingList)
-        {
-            Console.WriteLine("Lägger till objekt till packlistan...");
-            Console.ReadKey();
-        }
-
-        public static void ViewPackingLists()
-        {
-            Console.WriteLine("Visar alla packlistor...");
-            Console.ReadKey();
-        }
-
         // Metod för att ta bort en resa
         public static void DeleteTrip()
         {
@@ -620,6 +602,62 @@ namespace TravelDiary
                         Console.ReadKey();
                 }
             }
+        }
+
+
+        /* METODER FÖR PACKLISTA */
+
+        // Skapar en ny packlista 
+        public static void CreatePackingList()
+       {
+            Console.Clear();
+            Console.WriteLine("S K A P A   P A C K L I S T A\n");
+
+            // Frågar efter destination med validering
+            string destination = PromptForInput("Ange resmålet för din kommande resa: ", "destination");
+
+            // Skapar en ny packlista
+            PackingList newList = new PackingList { Destination = destination };
+            packingLists.Add(newList); // Lägger till i listan
+            SavePackingLists(); // Sparar direkt till JSON-filen
+
+            Console.WriteLine($"Packlista för {destination} skapad! Tryck på valfri tangent för att lägga till objekt...");
+            Console.ReadKey();
+
+           // Lägger till nytt objekt
+           AddPackingItems(newList);
+       }
+
+        // Sparar packlistor till JSON-fil
+        public static void SavePackingLists()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonData = JsonSerializer.Serialize(packingLists, options);
+            File.WriteAllText(packingListsFile, jsonData);
+        }
+
+        // Laddar in packlistor från JSON-fil
+        public static void LoadPackingLists()
+        {
+            if (File.Exists(packingListsFile))
+            {
+                string jsonData = File.ReadAllText(packingListsFile);
+                packingLists = JsonSerializer.Deserialize<List<PackingList>>(jsonData) ?? new List<PackingList>();
+            }
+        }
+
+
+
+        public static void AddPackingItems(PackingList packingList)
+        {
+            Console.WriteLine("Lägger till objekt till packlistan...");
+            Console.ReadKey();
+        }
+
+        public static void ViewPackingLists()
+        {
+            Console.WriteLine("Visar alla packlistor...");
+            Console.ReadKey();
         }
 
 
