@@ -32,16 +32,23 @@ namespace TravelDiary
             {
                 Console.Clear();
                 Console.WriteLine("T R A V E L   D I A R Y\n"); // "Rubrik" som visas högst upp i menyn
-                Console.WriteLine("Hej och välkommen till resedagboken! Här kan du samla alla dina resor du gjort för att ");
-                Console.WriteLine("återuppleva fantastiska minnen och dokumentera dina äventyr på ett och samma ställe.\n");
+                Console.WriteLine("Hej och välkommen till resedagboken! Här kan du samla alla dina resor du gjort för att\nåteruppleva fantastiska minnen och dokumentera dina äventyr på ett och samma ställe.\n");
                 Console.WriteLine("Gör ett val nedan för att ta dig vidare i din travel diary!\n");
+
+                Console.WriteLine("H A N T E R A   B E S Ö K T A   R E S O R");
                 Console.WriteLine("[1] - Visa alla resor i dagboken");
                 Console.WriteLine("[2] - Lägg till en resa i dagboken");
                 Console.WriteLine("[3] - Redigera en befintlig resa i dagboken");
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[4] - Ta bort en resa från dagboken\n");
+                Console.ResetColor();
+                Console.WriteLine("H A N T E R A   P A C K L I S T O R   F Ö R   K O M M A N D E   R E S O R");
                 Console.WriteLine("[5] - Skapa en packlista för kommande resa");
                 Console.WriteLine("[6] - Visa och hantera packlistor");
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[7] - Ta bort en packlista\n");
+                Console.ResetColor();
+                
                 Console.WriteLine("[X] - Stäng resedagboken\n");
 
                 // Användarens menyval
