@@ -40,7 +40,8 @@ namespace TravelDiary
                 Console.WriteLine("[3] - Redigera en befintlig resa i dagboken");
                 Console.WriteLine("[4] - Ta bort en resa från dagboken\n");
                 Console.WriteLine("[5] - Skapa en packlista för kommande resa");
-                Console.WriteLine("[6] - Visa och hantera packlistor\n");
+                Console.WriteLine("[6] - Visa och hantera packlistor");
+                Console.WriteLine("[7] - Ta bort en packlista\n");
                 Console.WriteLine("[X] - Stäng resedagboken\n");
 
                 // Användarens menyval
@@ -65,6 +66,9 @@ namespace TravelDiary
                         break;
                     case '6':
                         ViewPackingLists(); // Visa och hantera packlistor
+                        break;
+                    case '7':
+                        DeletePackingList(); // Radera en packlista
                         break;
                     case 'X':
                     case 'x':
@@ -819,6 +823,13 @@ namespace TravelDiary
                 Console.WriteLine("Ogiltigt val. Ange ett giltigt nummer från listan.\nTryck på valfri tangent för att försöka igen...");
                 Console.ReadKey();
             }
+        }
+
+        // Ta bort en hel packlista
+        public static void DeletePackingList()
+        {
+            Console.WriteLine("Tar bort en packlista...");
+            Console.ReadKey();
         }
 
         // Sparar packlistor till JSON-fil
