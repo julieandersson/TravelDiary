@@ -42,6 +42,80 @@
       {
         "Item": "laddare",
         "IsPacked": false
+      },
+      {
+        "Item": "lockt\u00E5ng",
+        "IsPacked": false
+      },
+      {
+        "Item": "smink",
+        "IsPacked": false
+      },
+      {
+        "Item": "hudv\u00E5rdprodukter",
+        "IsPacked": false
+      },
+      {
+        "Item": "dator",
+        "IsPacked": false
+      },
+      {
+        "Item": "bikini",
+        "IsPacked": false
+      },
+      {
+        "Item": "solkr\u00E4m",
+        "IsPacked": false
+      },
+      {
+        "Item": "234",
+        "IsPacked": false
+      }
+    ]
+  },
+  {
+    "Destination": "K\u00F6penhamn",
+    "Items": [
+      {
+        "Item": "en mobilladdare",
+        "IsPacked": false
+      },
+      {
+        "Item": "tv\u00E5 tr\u00F6jor",
+        "IsPacked": false
+      }
+    ]
+  },
+  {
+    "Destination": "Stockholm",
+    "Items": [
+      {
+        "Item": "1 mobilladdare",
+        "IsPacked": false
+      },
+      {
+        "Item": "2 par jeans",
+        "IsPacked": false
+      },
+      {
+        "Item": "5 olika toppar",
+        "IsPacked": false
+      },
+      {
+        "Item": "sminkv\u00E4ska",
+        "IsPacked": false
+      },
+      {
+        "Item": "hudv\u00E5rdprodukter",
+        "IsPacked": false
+      },
+      {
+        "Item": "1 lockt\u00E5ng",
+        "IsPacked": false
+      },
+      {
+        "Item": "1 platt\u00E5ng",
+        "IsPacked": false
       }
     ]
   }

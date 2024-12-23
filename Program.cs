@@ -664,12 +664,103 @@ namespace TravelDiary
             Console.ReadKey();
         }
 
+        // Visa packlistor
         public static void ViewPackingLists()
         {
-            Console.WriteLine("Visar alla packlistor...");
-            Console.ReadKey();
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("P A C K L I S T O R   F Ö R   K O M M A N D E   R E S O R\n");
+
+                if (packingLists.Count == 0)
+                {
+                    Console.WriteLine("Du har inga packlistor sparade.\n");
+                    Console.WriteLine("Tryck på valfri tangent för att återvända till huvudmenyn...");
+                    Console.ReadKey();
+                    return;
+                }
+
+                // Visa alla packlistor
+                for (int i = 0; i < packingLists.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {packingLists[i].Destination}");
+                }
+
+                Console.WriteLine("\nAnge numret på packlistan du vill hantera, eller X för att återvända:");
+                string? input = Console.ReadLine();
+
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
+                    return;
+
+                if (int.TryParse(input, out int index) && index >= 0 && index < packingLists.Count)
+                {
+                    HandlePackingList(packingLists[index]);
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+                    Console.ReadKey();
+                }
+            }
         }
 
+        // Hantera packlistor
+        public static void HandlePackingList(PackingList packingList)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine($"P A C K L I S T A   F Ö R   {packingList.Destination}\n");
+
+                // Visa objekt i listan
+                if (packingList.Items.Count == 0)
+                {
+                    Console.WriteLine("Packlistan är tom.");
+                }
+                else
+                {
+                    for (int i = 0; i < packingList.Items.Count; i++)
+                    {
+                        Console.WriteLine($"[{i}] {(packingList.Items[i].IsPacked ? "[X]" : "[ ]")} {packingList.Items[i].Item}");
+                    }
+                }
+
+                // Alternativ för att hantera packlistan
+                Console.WriteLine("\nVälj ett alternativ:");
+                Console.WriteLine("[1] - Lägg till ett objekt");
+                Console.WriteLine("[2] - Markera som packad");
+                Console.WriteLine("[3] - Ta bort ett objekt");
+                Console.WriteLine("[X] - Gå tillbaka");
+
+                string? choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        AddPackingItems(packingList);
+                        break;
+                    case "2":
+                        MarkItemPacked(packingList);
+                        break;
+                    case "3":
+                        RemovePackingItem(packingList);
+                        break;
+                    case "X":
+                    case "x":
+                        return;
+                    default:
+                        Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        public static void MarkItemPacked(PackingList packingList)
+        {}
+
+        public static void RemovePackingItem(PackingList packingList)
+        {}
 
         // Sparar packlistor till JSON-fil
         public static void SavePackingLists()
@@ -689,13 +780,11 @@ namespace TravelDiary
             }
         }
 
-
-
         public static void ExitProgram()
         {
             Console.Clear();
             Console.WriteLine("Stänger ner...\n");
-            Console.WriteLine("Tack för att du använde resedagboken! Välkommen tillbaka!\n");
+            Console.WriteLine("Tack för att du använde resedagboken! Välkommen åter!\n");
             Environment.Exit(0);
         }
     }
