@@ -730,7 +730,7 @@ namespace TravelDiary
                 Console.WriteLine("[1] - Lägg till ett objekt");
                 Console.WriteLine("[2] - Markera som packad");
                 Console.WriteLine("[3] - Ta bort ett objekt");
-                Console.WriteLine("[X] - Gå tillbaka");
+                Console.WriteLine("[X] - Gå tillbaka\n");
 
                 string? choice = Console.ReadLine();
 
@@ -784,15 +784,41 @@ namespace TravelDiary
 
             if (int.TryParse(input, out int index) && index >= 0 && index < packingList.Items.Count)
             {
-                packingList.Items.RemoveAt(index);
-                SavePackingLists();
-                Console.WriteLine("Objekt borttaget! Tryck på valfri tangent för att fortsätta...");
+                var itemToRemove = packingList.Items[index];
+        
+                while (true)
+                {
+                    Console.Clear();
+                    Console.WriteLine($"Är du säker på att du vill ta bort objektet \"{itemToRemove.Item}\"? (Ja/Nej)");
+                    string? confirmation = Console.ReadLine()?.Trim().ToUpper();
+
+                    if (confirmation == "JA")
+                    {
+                        packingList.Items.RemoveAt(index);
+                        SavePackingLists();
+                        Console.WriteLine("\nObjektet har tagits bort!\nTryck på valfri tangent för att fortsätta...");
+                        Console.ReadKey();
+                        return;
+                    }
+                    else if (confirmation == "NEJ")
+                    {
+                        Console.WriteLine("\nÅtgärden avbröts. Inget objekt har tagits bort.\nTryck på valfri tangent för att fortsätta...");
+                        Console.ReadKey();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ogiltig inmatning. Ange 'Ja' för att ta bort eller 'Nej' för att avbryta.");
+                        Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ReadKey();
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+                Console.WriteLine("Ogiltigt val. Ange ett giltigt nummer från listan.\nTryck på valfri tangent för att försöka igen...");
+                Console.ReadKey();
             }
-            Console.ReadKey();
         }
 
         // Sparar packlistor till JSON-fil
