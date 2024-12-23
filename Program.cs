@@ -756,11 +756,44 @@ namespace TravelDiary
             }
         }
 
+        // Metod för att markera objekt som packat
         public static void MarkItemPacked(PackingList packingList)
-        {}
+        {
+            Console.Write("Ange numret på objektet att markera som packat: ");
+            string? input = Console.ReadLine();
 
+            if (int.TryParse(input, out int index) && index >= 0 && index < packingList.Items.Count)
+            {
+                packingList.Items[index].IsPacked = true;
+                SavePackingLists();
+                Console.WriteLine("Objekt markerat som packat! Tryck på valfri tangent för att fortsätta...");
+            }
+            else
+            {
+            Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+            }
+            Console.ReadKey();
+
+        }
+
+        // Ta bort objekt i packlistan
         public static void RemovePackingItem(PackingList packingList)
-        {}
+        {
+            Console.Write("Ange numret på objektet att ta bort: ");
+            string? input = Console.ReadLine();
+
+            if (int.TryParse(input, out int index) && index >= 0 && index < packingList.Items.Count)
+            {
+                packingList.Items.RemoveAt(index);
+                SavePackingLists();
+                Console.WriteLine("Objekt borttaget! Tryck på valfri tangent för att fortsätta...");
+            }
+            else
+            {
+                Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+            }
+            Console.ReadKey();
+        }
 
         // Sparar packlistor till JSON-fil
         public static void SavePackingLists()
