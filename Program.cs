@@ -628,6 +628,49 @@ namespace TravelDiary
            AddPackingItems(newList);
        }
 
+       // Lägg till objekt i packlistan
+
+       public static void AddPackingItems(PackingList packingList)
+       {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine($"Packlista för {packingList.Destination}\n");
+
+                // Visar befintliga objekt i packlistan om det finns några
+                if (packingList.Items.Count == 0)
+                {
+                    Console.WriteLine("Packlistan är tom.");
+                }
+                else
+                {
+                    for (int i = 0; i < packingList.Items.Count; i++)
+                    {
+                        Console.WriteLine($"[{i}] {(packingList.Items[i].IsPacked ? "[X]" : "[ ]")} {packingList.Items[i].Item}");
+                    }
+                }
+   
+                // Låter användaren lägga till ett nytt objekt
+                Console.WriteLine("\nAnge ett objekt att lägga till (eller tryck Enter för att avsluta):");
+                string? input = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(input)) break;
+
+                packingList.Items.Add(new PackingItem { Item = input, IsPacked = false });
+                SavePackingLists(); // Sparar efter varje ändring
+            }
+
+            Console.WriteLine("Packlista uppdaterad! Tryck på valfri tangent för att återvända till menyn...");
+            Console.ReadKey();
+        }
+
+        public static void ViewPackingLists()
+        {
+            Console.WriteLine("Visar alla packlistor...");
+            Console.ReadKey();
+        }
+
+
         // Sparar packlistor till JSON-fil
         public static void SavePackingLists()
         {
@@ -646,19 +689,6 @@ namespace TravelDiary
             }
         }
 
-
-
-        public static void AddPackingItems(PackingList packingList)
-        {
-            Console.WriteLine("Lägger till objekt till packlistan...");
-            Console.ReadKey();
-        }
-
-        public static void ViewPackingLists()
-        {
-            Console.WriteLine("Visar alla packlistor...");
-            Console.ReadKey();
-        }
 
 
         public static void ExitProgram()

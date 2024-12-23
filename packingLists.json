@@ -10,5 +10,39 @@
   {
     "Destination": "grekland",
     "Items": []
+  },
+  {
+    "Destination": "Brasilien",
+    "Items": [
+      {
+        "Item": "tandborste",
+        "IsPacked": false
+      },
+      {
+        "Item": "smink",
+        "IsPacked": false
+      },
+      {
+        "Item": "hudv\u00E5rd",
+        "IsPacked": false
+      },
+      {
+        "Item": "h\u00E5rprodukter",
+        "IsPacked": false
+      },
+      {
+        "Item": "kl\u00E4der",
+        "IsPacked": false
+      }
+    ]
+  },
+  {
+    "Destination": "Italien",
+    "Items": [
+      {
+        "Item": "laddare",
+        "IsPacked": false
+      }
+    ]
   }
 ]
