@@ -828,10 +828,94 @@ namespace TravelDiary
         // Ta bort en hel packlista
         public static void DeletePackingList()
         {
-            Console.WriteLine("Tar bort en packlista...");
-            Console.ReadKey();
-        }
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("T A   B O R T   E N   P A C K L I S T A\n");
 
+                // Kontrollera om det finns några packlistor
+                if (packingLists.Count == 0)
+                {
+                    Console.WriteLine("Det finns inga packlistor att ta bort."); // Meddelande om listan är tom
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Visa alla packlistor med index
+                Console.WriteLine("Ange numret på packlistan du vill ta bort.");
+                Console.WriteLine("Tryck X för att återgå till huvudmenyn.\n");
+
+                for (int i = 0; i < packingLists.Count; i++)
+                {
+                    Console.WriteLine($"[{i}] {packingLists[i].Destination}");
+                }
+
+                // Be användaren ange sitt val
+                Console.Write("\nSkriv ditt val: ");
+                string? input = Console.ReadLine()?.Trim();
+
+                // tryck X för att återgå till huvudmenyn
+                if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    ReturnToMenu();
+                    return;
+                }
+
+                // Kontrollera att input är en giltig siffra
+                if (int.TryParse(input, out int index))
+                {
+                    if (index >= 0 && index < packingLists.Count) // Kontrollera att index finns i listan
+                    {
+                        // En extra bekräftelse för att ta bort packlistan
+                        while (true)
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"Är du säker på att du vill ta bort packlistan för \"{packingLists[index].Destination}\"? (Ja/Nej)");
+                            string confirmation = Console.ReadLine()?.Trim().ToUpper() ?? "";
+
+                            // Om användaren skriver Ja, ta bort packlistan
+                            if (confirmation == "JA")
+                            {
+                                packingLists.RemoveAt(index);
+                                SavePackingLists();
+                                Console.WriteLine("\nPacklistan har tagits bort!");
+                                ReturnToMenu();
+                                return;
+                            }
+                            // Om användaren skriver Nej, avbryt
+                            else if (confirmation == "NEJ")
+                            {
+                                Console.WriteLine("\nÅtgärden avbröts. Ingen packlista har tagits bort.");
+                                ReturnToMenu();
+                                return;
+                            }
+                            else
+                            {
+                                // Felmeddelande för ogiltig input
+                                Console.WriteLine("Ogiltig inmatning. Ange antingen 'Ja' för att ta bort eller 'Nej' för att avbryta.");
+                                Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                                Console.ReadKey();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Felmeddelande om index inte finns i listan
+                        Console.WriteLine($"Numret {index} finns inte i listan.");
+                        Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    // Felmeddelande för ogiltig input
+                    Console.WriteLine("Ogiltig inmatning. Ange ett giltigt nummer från listan.");
+                    Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                    Console.ReadKey();
+                }
+            }
+        }
+    
         // Sparar packlistor till JSON-fil
         public static void SavePackingLists()
         {
