@@ -681,7 +681,9 @@ namespace TravelDiary
             packingLists.Add(newList); // Lägger till i listan
             SavePackingLists(); // Sparar direkt till JSON-filen
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Packlista för {destination} skapad! Tryck på valfri tangent för att lägga till objekt...");
+            Console.ResetColor();
             Console.ReadKey();
 
            // Lägger till nytt objekt
@@ -720,7 +722,9 @@ namespace TravelDiary
                 SavePackingLists(); // Sparar efter varje ändring
             }
 
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Packlista uppdaterad! Tryck på valfri tangent för att återvända till menyn...");
+            Console.ResetColor();
             Console.ReadKey();
         }
 
