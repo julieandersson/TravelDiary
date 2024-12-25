@@ -109,9 +109,14 @@ namespace TravelDiary
             newTrip.Cost = PromptForDecimalInput("\nAnge kostnad för resan (SEK): ");
 
             // Samlar in reskompisar
-            Console.WriteLine("\nAnge reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
+            bool repeatQuestion = true;
             while (true)
             {
+                if (repeatQuestion)
+                {
+                    Console.WriteLine("\nAnge reskompisar (en i taget) eller skriv 'soloresa' om du reste själv:");
+                }
+                
                 string? companion = Console.ReadLine();
 
                 // Om användaren trycker Enter utan input, avsluta insamling av data
@@ -133,12 +138,14 @@ namespace TravelDiary
                 {
                     newTrip.Companions.Add(companion);
                     Console.WriteLine("Ange fler reskompisar eller tryck Enter för att avsluta:"); // Meddelande som visas efter varje angiven resekompis
+                    repeatQuestion = false;
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig inmatning. Namnet måste innehålla minst 2 bokstäver och endast bokstäver."); // Felmeddelande
                     Console.ResetColor();
+                    repeatQuestion = true;
                 }
             }
 
