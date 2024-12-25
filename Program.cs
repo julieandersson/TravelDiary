@@ -37,13 +37,17 @@ namespace TravelDiary
 
                 Console.WriteLine("H A N T E R A   B E S Ö K T A   R E S O R");
                 Console.WriteLine("[1] - Visa alla resor i dagboken");
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("[2] - Lägg till en resa i dagboken");
+                Console.ResetColor();
                 Console.WriteLine("[3] - Redigera en befintlig resa i dagboken");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[4] - Ta bort en resa från dagboken\n");
                 Console.ResetColor();
                 Console.WriteLine("H A N T E R A   P A C K L I S T O R   F Ö R   K O M M A N D E   R E S O R");
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("[5] - Skapa en packlista för kommande resa");
+                Console.ResetColor();
                 Console.WriteLine("[6] - Visa och hantera packlistor");
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[7] - Ta bort en packlista\n");
@@ -132,7 +136,9 @@ namespace TravelDiary
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig inmatning. Namnet måste innehålla minst 2 bokstäver och endast bokstäver."); // Felmeddelande
+                    Console.ResetColor();
                 }
             }
 
@@ -144,8 +150,10 @@ namespace TravelDiary
             SaveTrips();
 
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\nResan har sparats!");
             ReturnToMenu();
+            Console.ResetColor();
         }
 
         // Metod för string-input (för destination och kontinent) med validering
@@ -183,7 +191,9 @@ namespace TravelDiary
                         return input; // om input är giltig
                     }
                     // Felmeddelande vid ogiltig input
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig inmatning. Resmålet måste vara minst 3 bokstäver och får endast innehålla bokstäver.");
+                    Console.ResetColor();
                 }
                 // Validering för "continent" (måste matcha de fördefinierade kontinenterna)
                 else if (validationType.Equals("continent", StringComparison.OrdinalIgnoreCase))
@@ -193,7 +203,9 @@ namespace TravelDiary
                         return input; // om input är giltig
                     }
                     // Felmeddelande vid ogiltig input
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig inmatning. Ange Afrika, Antarktis, Asien, Europa, Nordamerika, Oceanen eller Sydamerika.");
+                    Console.ResetColor();
                 }
                 // Generell validering för andra fall
                 else if (!string.IsNullOrEmpty(input))
@@ -203,7 +215,9 @@ namespace TravelDiary
                 else
                 {
                     // Felmeddelande om input är tomt
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Fältet får inte vara tomt. Försök igen.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -239,7 +253,9 @@ namespace TravelDiary
                 }
 
                 // Felmeddelande för ogiltig input
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltig inmatning. Ange ett positivt heltal.");
+                Console.ResetColor();
             }
         }
 
@@ -274,15 +290,19 @@ namespace TravelDiary
                     // Kontrollera så datumet inte är i framtiden
                     if (dateValue >= DateTime.Today)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Datumet kan inte vara i framtiden. Försök igen.");
-                        continue; // be användaren om nytt input 
+                        Console.ResetColor();
+                        continue; // be användaren om nytt input
                     }
 
                     return dateValue; // returnera det giltiga datumet
                 }
 
                 // Felmeddelande för ogiltig input
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltigt datumformat. Ange datum i formatet yyyy-MM-dd.");
+                Console.ResetColor();
             }
         }
 
@@ -320,7 +340,9 @@ namespace TravelDiary
                 }
 
                 // Felmeddelande för ogiltig input
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltig inmatning. Ange endast positiva siffror (exempel: 20000).");
+                Console.ResetColor();
             }
         }
 
@@ -346,7 +368,9 @@ namespace TravelDiary
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val. Vänligen ange 'semester' eller 'jobbresa'.");
+                    Console.ResetColor();
                 }
             }
         }
@@ -418,8 +442,10 @@ namespace TravelDiary
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val.");
                     Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                    Console.ResetColor();
                     Console.ReadKey();
                 }
             }
@@ -454,7 +480,9 @@ namespace TravelDiary
                 }
                 else
                 {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltigt val. Ange X för att gå tillbaka.");
+                Console.ResetColor();
                 }
             }
         }
@@ -509,15 +537,19 @@ namespace TravelDiary
                     // Spara den uppdaterade resan och visa meddelande
                     SaveTrips();
                     Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\nResan har uppdaterats!");
                     ReturnToMenu();
+                    Console.ResetColor();
                     return;
                 }
                 else
                 {
                     // Felmeddelande som visas vid ogiltigt val
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val.");
                     Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                    Console.ResetColor();
                     Console.ReadKey();
                 }
             }
@@ -576,7 +608,9 @@ namespace TravelDiary
                             {
                                 trips.RemoveAt(index);
                                 SaveTrips();
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("\nResan har tagits bort!");
+                                Console.ResetColor();
                                 ReturnToMenu();
                                 return;
                             }
@@ -584,15 +618,19 @@ namespace TravelDiary
                             // Om användaren skriver Nej, avbryt och ta inte bort
                             else if (confirmation == "NEJ")
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("\nÅtgärden avbröts. Ingen resa har tagits bort.");
+                                Console.ResetColor();
                                 ReturnToMenu();
                                 return;
                             }
                             else
                             {
                                 // Felmeddelande för ogiltig input, användaren kan endast skriva in Ja eller Nej
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Ogiltig inmatning. Ange antingen Ja för att ta bort eller Nej för att avbryta.");
                                 Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                                Console.ResetColor();
                                 Console.ReadKey();
                             }
                         }
@@ -600,16 +638,20 @@ namespace TravelDiary
                     else
                     {
                         // Felmeddelande om index som användaren anger inte finns i listan
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Numret {index} finns inte i listan.");
                         Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ResetColor();
                         Console.ReadKey();
                     }
                 }
                 else
                 {
                         // Felmeddelande för ogiltig input (om användaren inte anger en siffra)
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltig inmatning. Ange ett giltigt nummer från listan.");
                         Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ResetColor();
                         Console.ReadKey();
                 }
             }
@@ -709,7 +751,9 @@ namespace TravelDiary
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+                    Console.ResetColor();
                     Console.ReadKey();
                 }
             }
@@ -760,7 +804,9 @@ namespace TravelDiary
                     case "x":
                         return;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+                        Console.ResetColor();
                         Console.ReadKey();
                         break;
                 }
@@ -781,7 +827,9 @@ namespace TravelDiary
             }
             else
             {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
+            Console.ResetColor();
             }
             Console.ReadKey();
 
@@ -807,27 +855,35 @@ namespace TravelDiary
                     {
                         packingList.Items.RemoveAt(index);
                         SavePackingLists();
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nObjektet har tagits bort!\nTryck på valfri tangent för att fortsätta...");
+                        Console.ResetColor();
                         Console.ReadKey();
                         return;
                     }
                     else if (confirmation == "NEJ")
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nÅtgärden avbröts. Inget objekt har tagits bort.\nTryck på valfri tangent för att fortsätta...");
+                        Console.ResetColor();
                         Console.ReadKey();
                         return;
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltig inmatning. Ange 'Ja' för att ta bort eller 'Nej' för att avbryta.");
                         Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ResetColor();
                         Console.ReadKey();
                     }
                 }
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltigt val. Ange ett giltigt nummer från listan.\nTryck på valfri tangent för att försöka igen...");
+                Console.ResetColor();
                 Console.ReadKey();
             }
         }
@@ -885,22 +941,28 @@ namespace TravelDiary
                             {
                                 packingLists.RemoveAt(index);
                                 SavePackingLists();
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("\nPacklistan har tagits bort!");
+                                Console.ResetColor();
                                 ReturnToMenu();
                                 return;
                             }
                             // Om användaren skriver Nej, avbryt
                             else if (confirmation == "NEJ")
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("\nÅtgärden avbröts. Ingen packlista har tagits bort.");
+                                Console.ResetColor();
                                 ReturnToMenu();
                                 return;
                             }
                             else
                             {
                                 // Felmeddelande för ogiltig input
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Ogiltig inmatning. Ange antingen 'Ja' för att ta bort eller 'Nej' för att avbryta.");
                                 Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                                Console.ResetColor();
                                 Console.ReadKey();
                             }
                         }
@@ -908,16 +970,20 @@ namespace TravelDiary
                     else
                     {
                         // Felmeddelande om index inte finns i listan
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Numret {index} finns inte i listan.");
                         Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.ResetColor();
                         Console.ReadKey();
                     }
                 }
                 else
                 {
                     // Felmeddelande för ogiltig input
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig inmatning. Ange ett giltigt nummer från listan.");
                     Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                    Console.ResetColor();
                     Console.ReadKey();
                 }
             }

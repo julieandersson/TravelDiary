@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "Destination": "testar",
+    "Continent": "asien",
+    "Duration": 6,
+    "StartDate": "2024-01-01T00:00:00",
+    "EndDate": "2024-12-12T00:00:00",
+    "Cost": 2000,
+    "Companions": [
+      "Soloresa"
+    ],
+    "Type": "Vacation"
+  }
+]
