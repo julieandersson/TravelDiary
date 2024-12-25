@@ -826,9 +826,13 @@ namespace TravelDiary
 
                 // Visar menyalternativen för att hantera packlistan
                 Console.WriteLine("\nVälj ett alternativ:");
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("[1] - Lägg till ett objekt"); // val för att lägga till nya objekt i listan
+                Console.ResetColor();
                 Console.WriteLine("[2] - Markera som packad"); // val för att markera objekt som packat
-                Console.WriteLine("[3] - Ta bort ett objekt"); // val för att ta bort ett befintligt objekt 
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("[3] - Ta bort ett objekt"); // val för att ta bort ett befintligt objekt
+                Console.ResetColor();
                 Console.WriteLine("[X] - Gå tillbaka\n"); // val för att återvända till menyn
 
                 // Läser in användarens val
