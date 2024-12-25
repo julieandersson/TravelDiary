@@ -10,11 +10,13 @@ namespace TravelDiary
     {
         // Lista för att lagra alla nya resor i dagboken
         private static List<Trip> trips = new List<Trip>();
+        // Filnamn för att spara resor i JSON-format
         private static string tripsFile = "travelDiary.json";
 
 
         // Lista för att lagra alla pack-listor med de saker som ska packas ned
         private static List<PackingList> packingLists = new List<PackingList>();
+        // Filnamn för att spara packlistor i JSON-format
         private static string packingListsFile = "packingLists.json";
 
 
@@ -31,10 +33,12 @@ namespace TravelDiary
             while (true)
             {
                 Console.Clear();
+                // Presenterar nedan menyalternativ för användaren
                 Console.WriteLine("T R A V E L   D I A R Y\n"); // "Rubrik" som visas högst upp i menyn
                 Console.WriteLine("Hej och välkommen till resedagboken! Här kan du samla alla dina resor du gjort för att\nåteruppleva fantastiska minnen och dokumentera dina äventyr på ett och samma ställe.\n");
                 Console.WriteLine("Gör ett val nedan för att ta dig vidare i din travel diary!\n");
 
+                // Alternativ för hantering av resor
                 Console.WriteLine("H A N T E R A   B E S Ö K T A   R E S O R");
                 Console.WriteLine("[1] - Visa alla resor i dagboken");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -44,6 +48,7 @@ namespace TravelDiary
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[4] - Ta bort en resa från dagboken\n");
                 Console.ResetColor();
+                // Alternativ för hantering av packlistor
                 Console.WriteLine("H A N T E R A   P A C K L I S T O R   F Ö R   K O M M A N D E   R E S O R");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("[5] - Skapa en packlista för kommande resa");
@@ -55,9 +60,10 @@ namespace TravelDiary
                 
                 Console.WriteLine("[X] - Stäng resedagboken\n");
 
-                // Användarens menyval
+                // Läser in användarens menyval
                 char input = Console.ReadKey(true).KeyChar;
 
+                // Hanterar användarens val med en switch-sats
                 switch (input)
                 {
                     case '1':
@@ -86,6 +92,7 @@ namespace TravelDiary
                         ExitProgram(); // Avsluta programmet
                         break;
                     default:
+                        // Felmeddelande vid ogiltigt val
                         Console.WriteLine("Ogiltigt val. Försök igen.");
                         Console.ReadKey();
                         break;
@@ -93,12 +100,12 @@ namespace TravelDiary
             }
         }
 
-        // Lägg till en ny resa i resedagboken
+        // Metod för att lägga till en ny resa i resedagboken
         public static void AddTrip()
         {
             Console.Clear();
             Console.WriteLine("L Ä G G   T I L L   E N   R E S A\n");
-            Trip newTrip = new Trip();
+            Trip newTrip = new Trip(); // Skapar en ny instans av klassen Trip
 
             // Samlar in all information för den nya resan
             newTrip.Destination = PromptForInput("\nAnge resmål: ", "destination");
@@ -108,7 +115,7 @@ namespace TravelDiary
             newTrip.EndDate = PromptForDateInput("\nAnge slutdatum för resan (yyyy-mm-dd): ");
             newTrip.Cost = PromptForDecimalInput("\nAnge kostnad för resan (SEK): ");
 
-            // Samlar in reskompisar
+            // Hanterar inmatning av reskompisar eller soloresa
             bool repeatQuestion = true;
             while (true)
             {
@@ -158,7 +165,7 @@ namespace TravelDiary
 
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\nResan har sparats!");
+            Console.WriteLine("\nResan har sparats!"); // bekräftelse
             ReturnToMenu();
             Console.ResetColor();
         }
@@ -355,26 +362,34 @@ namespace TravelDiary
 
 
         // Metod för att låta användaren välja typ av resa
+        // Tar ett strängvärde som prompt som visas för användaren
         public static TripType PromptForTripType(string prompt)
         {
             var validChoices = new Dictionary<string, TripType>(StringComparer.OrdinalIgnoreCase)
             {
-                { "semester", TripType.Vacation },
-                { "jobbresa", TripType.Business }
+                { "semester", TripType.Vacation }, // "semester" mappas till TripType.Vacation
+                { "jobbresa", TripType.Business } // "jobbresa" mappas till TripType.Business
             };
 
+            // Startar en loop för att få giltigt input från användaren
             while (true)
             {
+                // Visar prompten för användaren
                 Console.WriteLine(prompt);
                 Console.Write("Skriv ditt val: ");
+
+                // Läser in användarens input
                 string? input = Console.ReadLine();
 
+                // Kontrollera om input är giltig genom att kolla om det matchar validChoises
                 if (input != null && validChoices.TryGetValue(input, out TripType tripType))
                 {
+                    // Om giltigt, returnera motsvarande TripType (vacation eller business)
                     return tripType;
                 }
                 else
                 {
+                    // Vid ogiltig input, visa ett felmeddelande och be användaren försöka igen
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val. Vänligen ange 'semester' eller 'jobbresa'.");
                     Console.ResetColor();
@@ -408,18 +423,20 @@ namespace TravelDiary
             Console.ReadKey();
         }
 
+        // metod för att visa alla resor i dagboken
         public static void DisplayTrips()
        {
-            while (true)
+            while (true) // Loop för att låta användaren navigera tills de går tillbaka till huvudmenyn
             {
                 Console.Clear();
-                Console.WriteLine("A L L A   D I N A   R E S O R\n");
+                Console.WriteLine("A L L A   D I N A   R E S O R\n"); // rubrik för listan
 
                 // Kontroll om det inte finns några resor i listan
-                if (trips.Count == 0)
+                if (trips.Count == 0) // Om listan "trips" är tom
                 {
+                    // Meddelande om det inte finns några resor
                     Console.WriteLine("Inga resor har lagts till i dagboken ännu.\n"); // Meddelade om listan är tom
-                    ReturnToMenu();
+                    ReturnToMenu(); // Går tillbaka till huvudmenyn
                     return;
                 }
 
@@ -427,14 +444,15 @@ namespace TravelDiary
                 Console.WriteLine("Ange den resan du vill läsa mer om.");
                 Console.WriteLine("Ange X för att gå tillbaka till huvudmenyn.\n");
 
+                // loopar genom alla resor och skriver ut varje resemål med ett index
                 for (int i = 0; i < trips.Count; i++)
                 {
-                    Console.WriteLine($"[{i}] {trips[i].Destination}");
+                    Console.WriteLine($"[{i}] {trips[i].Destination}"); // Exempel: [0] Paris
                 }
 
-                // Användarens input
+                // Låter användaren göra ett val
                 Console.Write("\nSkriv ditt val: ");
-                string? input = Console.ReadLine();
+                string? input = Console.ReadLine(); // läser in användarens val
 
                 // Gå tillbaka till huvudmenyn om användaren skriver "X" eller "x"
                 if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
@@ -445,10 +463,12 @@ namespace TravelDiary
                 // Försök att parsa input till ett giltigt index
                 if (int.TryParse(input, out int index) && index >= 0 && index < trips.Count)
                 {
+                    // om input är ett giltigt index, visa detaljer för den resan
                     ShowTripDetails(index);
                 }
                 else
                 {
+                    // Felmeddelande vid ogiltigt val
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt val.");
                     Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
@@ -464,29 +484,32 @@ namespace TravelDiary
             Console.Clear();
             Trip trip = trips[index]; // Hämtar den valda resan
 
-            Console.WriteLine("R E S E D E T A L J E R\n");
-            Console.WriteLine($"Resmål: {trip.Destination}");
-            Console.WriteLine($"Kontinent: {trip.Continent}");
-            Console.WriteLine($"Längd på resan: {trip.Duration} dagar");
-            Console.WriteLine($"Startdatum: {trip.StartDate:yyyy-MM-dd}");
-            Console.WriteLine($"Slutdatum: {trip.EndDate:yyyy-MM-dd}");
-            Console.WriteLine($"Totalkostnad: {trip.Cost} kr");
+            Console.WriteLine("R E S E D E T A L J E R\n"); // Rubrik för detaljer
+            Console.WriteLine($"Resmål: {trip.Destination}"); // resans destination
+            Console.WriteLine($"Kontinent: {trip.Continent}"); // kontinenten där destinationen ligger
+            Console.WriteLine($"Längd på resan: {trip.Duration} dagar"); // hur många dagar resan varade
+            Console.WriteLine($"Startdatum: {trip.StartDate:yyyy-MM-dd}"); // startdatum på resan
+            Console.WriteLine($"Slutdatum: {trip.EndDate:yyyy-MM-dd}"); // slutdatum för resan
+            Console.WriteLine($"Totalkostnad: {trip.Cost} kr"); // kostnaden för resan i kronor
 
+            // sammanfogar alla reskompisar eller visar "soloresa" om användaren reste ensam
             string companions = string.Join(", ", trip.Companions);
-
             Console.WriteLine($"Reskompis(ar) eller soloresa: {companions}");
+
+            // visar typen av resa: semester eller jobbresa
             Console.WriteLine($"Typ av resa: {(trip.Type == TripType.Vacation ? "Semester" : "Jobbresa")}");
 
             Console.WriteLine("\nAnge X för att gå tillbaka till alla resor.");
-            while (true)
+            while (true) // loop för att vänta på korrekt input
             {
-                string? input = Console.ReadLine();
+                string? input = Console.ReadLine(); // läser in användarens input
                 if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
                 {
                 break; // Gå tillbaka till listan med resor
                 }
                 else
                 {
+                // felmeddelande om användaren skriver något annat än "X"
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltigt val. Ange X för att gå tillbaka.");
                 Console.ResetColor();
@@ -671,33 +694,36 @@ namespace TravelDiary
         public static void CreatePackingList()
        {
             Console.Clear();
-            Console.WriteLine("S K A P A   P A C K L I S T A\n");
+            Console.WriteLine("S K A P A   P A C K L I S T A\n"); // rubrik för att visa att en ny packlista ska skapas
 
-            // Frågar efter destination med validering
+            // Frågar användaren efter destination för den nya packlistan
+            // Använder validering för att säkerställa korrekt inmatning
             string destination = PromptForInput("Ange resmålet för din kommande resa: ", "destination");
 
-            // Skapar en ny packlista
+            // Skapar en ny packlista av klassen PackingList och sätter destinationen
             PackingList newList = new PackingList { Destination = destination };
-            packingLists.Add(newList); // Lägger till i listan
+
+            // Lägger till den nya packlistan i listan med packlistor
+            packingLists.Add(newList);
             SavePackingLists(); // Sparar direkt till JSON-filen
 
+            // meddelande till användaren om att packlistan har skapats
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Packlista för {destination} skapad! Tryck på valfri tangent för att lägga till objekt...");
             Console.ResetColor();
             Console.ReadKey();
 
-           // Lägger till nytt objekt
+           // Lägger till nytt objekt/föremål i den nya packlistan
            AddPackingItems(newList);
        }
 
-       // Lägg till objekt i packlistan
-
+       // Metod för att lägga till till objekt i en specifik packlista
        public static void AddPackingItems(PackingList packingList)
        {
-            while (true)
+            while (true) // loop för att fortsätta lägga till objekt tills att användaren avslutar
             {
                 Console.Clear();
-                Console.WriteLine($"Packlista för {packingList.Destination}\n");
+                Console.WriteLine($"Packlista för {packingList.Destination}\n"); // visar vilken packlista som redigeras
 
                 // Visar befintliga objekt i packlistan om det finns några
                 if (packingList.Items.Count == 0)
@@ -706,8 +732,10 @@ namespace TravelDiary
                 }
                 else
                 {
+                    // loopa igenom och visa alla föremål som finns i packlistan
                     for (int i = 0; i < packingList.Items.Count; i++)
                     {
+                        // visar varje föremål med dess index och markerar om det är packat eller inte
                         Console.WriteLine($"[{i}] {(packingList.Items[i].IsPacked ? "[X]" : "[ ]")} {packingList.Items[i].Item}");
                     }
                 }
@@ -716,12 +744,15 @@ namespace TravelDiary
                 Console.WriteLine("\nAnge ett objekt att lägga till (eller tryck Enter för att avsluta):");
                 string? input = Console.ReadLine()?.Trim();
 
+                // om användaren trycker enter utan att skriva något avslutas loopen
                 if (string.IsNullOrEmpty(input)) break;
 
+                // Lägger till det nya föremålet i packlistan som opackad från början 
                 packingList.Items.Add(new PackingItem { Item = input, IsPacked = false });
                 SavePackingLists(); // Sparar efter varje ändring
             }
 
+            // Meddelande till användaren om att packlistan har uppdaterats
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Packlista uppdaterad! Tryck på valfri tangent för att återvända till menyn...");
             Console.ResetColor();
@@ -770,51 +801,56 @@ namespace TravelDiary
             }
         }
 
-        // Hantera packlistor
+        // Metod för att hantera en specifik packlista
         public static void HandlePackingList(PackingList packingList)
         {
-            while (true)
+            while (true) // loop för att hantera packlistan tills att användaren väljer att gå tillbaka
             {
                 Console.Clear();
-                Console.WriteLine($"P A C K L I S T A   F Ö R   {packingList.Destination}\n");
+                Console.WriteLine($"P A C K L I S T A   F Ö R   {packingList.Destination}\n"); // Rubrik som visar vilekn packlista som hanteras 
 
-                // Visa objekt i listan
-                if (packingList.Items.Count == 0)
+                // Visa alla objekt i packlistan eller meddela om listan är tom
+                if (packingList.Items.Count == 0) // kontroll om listan är tom
                 {
-                    Console.WriteLine("Packlistan är tom.");
+                    Console.WriteLine("Packlistan är tom."); // meddelande som visas om det inte finns några objekt
                 }
                 else
                 {
+                    // loopa igenom och visa alla objekt i packlistan
                     for (int i = 0; i < packingList.Items.Count; i++)
                     {
+                        // visar varje objekt med index och markerar om det är packat eller ej 
                         Console.WriteLine($"[{i}] {(packingList.Items[i].IsPacked ? "[X]" : "[ ]")} {packingList.Items[i].Item}");
                     }
                 }
 
-                // Alternativ för att hantera packlistan
+                // Visar menyalternativen för att hantera packlistan
                 Console.WriteLine("\nVälj ett alternativ:");
-                Console.WriteLine("[1] - Lägg till ett objekt");
-                Console.WriteLine("[2] - Markera som packad");
-                Console.WriteLine("[3] - Ta bort ett objekt");
-                Console.WriteLine("[X] - Gå tillbaka\n");
+                Console.WriteLine("[1] - Lägg till ett objekt"); // val för att lägga till nya objekt i listan
+                Console.WriteLine("[2] - Markera som packad"); // val för att markera objekt som packat
+                Console.WriteLine("[3] - Ta bort ett objekt"); // val för att ta bort ett befintligt objekt 
+                Console.WriteLine("[X] - Gå tillbaka\n"); // val för att återvända till menyn
 
+                // Läser in användarens val
                 string? choice = Console.ReadLine();
 
+                // hanterar användarens val baserat på menyval
                 switch (choice)
                 {
                     case "1":
-                        AddPackingItems(packingList);
+                        AddPackingItems(packingList); // anropar metod för att lägga till nya objekt
                         break;
                     case "2":
-                        MarkItemPacked(packingList);
+                        MarkItemPacked(packingList); // anropar metod för att markera objekt som packat
                         break;
                     case "3":
-                        RemovePackingItem(packingList);
+                        RemovePackingItem(packingList); // anropar metod för att ta bort ett objekt
                         break;
                     case "X":
                     case "x":
-                        return;
+                        return; // avslutar metoden och går tillbaka till föregående meny
                     default:
+                        // felmeddelande för ogiltigt val
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
                         Console.ResetColor();
@@ -827,17 +863,22 @@ namespace TravelDiary
         // Metod för att markera objekt som packat
         public static void MarkItemPacked(PackingList packingList)
         {
-            Console.Write("Ange numret på objektet att markera som packat: ");
+            Console.Write("Ange numret på objektet att markera som packat: "); // ber användaren ange index med det objekt som ska markeras
             string? input = Console.ReadLine();
 
+            // kontrollerar om input är en giltig siffra och om indexet finns i listan
             if (int.TryParse(input, out int index) && index >= 0 && index < packingList.Items.Count)
             {
+                // markerar objektet som packat
                 packingList.Items[index].IsPacked = true;
+                // sparar ändringarna
                 SavePackingLists();
+                // bekräftelsemeddelande
                 Console.WriteLine("Objekt markerat som packat! Tryck på valfri tangent för att fortsätta...");
             }
             else
             {
+            // felmeddelande vid ogiltig input
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Ogiltigt val. Tryck på valfri tangent för att försöka igen...");
             Console.ResetColor();
@@ -846,42 +887,44 @@ namespace TravelDiary
 
         }
 
-        // Ta bort objekt i packlistan
+        // Metod för att ta bort objekt i packlistan
         public static void RemovePackingItem(PackingList packingList)
         {
-            Console.Write("Ange numret på objektet att ta bort: ");
+            Console.Write("Ange numret på objektet att ta bort: "); // ber användaren att ange index för objekt som ska tas bort
             string? input = Console.ReadLine();
 
+            // kontrollerar om input är en giltig siffra och om index finns i listan
             if (int.TryParse(input, out int index) && index >= 0 && index < packingList.Items.Count)
             {
-                var itemToRemove = packingList.Items[index];
+                var itemToRemove = packingList.Items[index]; // hämtar objektet som ska tas bort
         
-                while (true)
+                while (true) // loop för att bekräfta borttagningen
                 {
                     Console.Clear();
-                    Console.WriteLine($"Är du säker på att du vill ta bort objektet \"{itemToRemove.Item}\"? (Ja/Nej)");
+                    Console.WriteLine($"Är du säker på att du vill ta bort objektet \"{itemToRemove.Item}\"? (Ja/Nej)"); // bekräftelsefråga
                     string? confirmation = Console.ReadLine()?.Trim().ToUpper();
 
-                    if (confirmation == "JA")
+                    if (confirmation == "JA") // om användaren bekräftar med ett "ja"
                     {
-                        packingList.Items.RemoveAt(index);
-                        SavePackingLists();
+                        packingList.Items.RemoveAt(index); // tar bort objektet
+                        SavePackingLists(); // sparar till jSON-filen
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\nObjektet har tagits bort!\nTryck på valfri tangent för att fortsätta...");
                         Console.ResetColor();
                         Console.ReadKey();
-                        return;
+                        return; // avslutar metoden
                     }
-                    else if (confirmation == "NEJ")
+                    else if (confirmation == "NEJ") // om användaren ångrar sig och skriver "nej"
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nÅtgärden avbröts. Inget objekt har tagits bort.\nTryck på valfri tangent för att fortsätta...");
                         Console.ResetColor();
                         Console.ReadKey();
-                        return;
+                        return; // avslutar metoden
                     }
                     else
                     {
+                        // felmeddelande vid giltigt svar
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltig inmatning. Ange 'Ja' för att ta bort eller 'Nej' för att avbryta.");
                         Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
@@ -892,6 +935,7 @@ namespace TravelDiary
             }
             else
             {
+                // Felmeddelande vid ogiltigt val
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltigt val. Ange ett giltigt nummer från listan.\nTryck på valfri tangent för att försöka igen...");
                 Console.ResetColor();
@@ -899,20 +943,20 @@ namespace TravelDiary
             }
         }
 
-        // Ta bort en hel packlista
+        // Metod för att ta bort en hel packlista
         public static void DeletePackingList()
         {
-            while (true)
+            while (true) // Loop för att hantera packlistan tills användaren väljer att gå tillbaka
             {
                 Console.Clear();
                 Console.WriteLine("T A   B O R T   E N   P A C K L I S T A\n");
 
                 // Kontrollera om det finns några packlistor
-                if (packingLists.Count == 0)
+                if (packingLists.Count == 0) // Om listan är tom
                 {
                     Console.WriteLine("Det finns inga packlistor att ta bort."); // Meddelande om listan är tom
-                    ReturnToMenu();
-                    return;
+                    ReturnToMenu(); // Återgår till huvudmenyn
+                    return; // Avslutar metoden
                 }
 
                 // Visa alla packlistor med index
@@ -921,71 +965,59 @@ namespace TravelDiary
 
                 for (int i = 0; i < packingLists.Count; i++)
                 {
-                    Console.WriteLine($"[{i}] {packingLists[i].Destination}");
+                    Console.WriteLine($"[{i}] {packingLists[i].Destination}"); // Visar packlistor med destination
                 }
 
                 // Be användaren ange sitt val
                 Console.Write("\nSkriv ditt val: ");
                 string? input = Console.ReadLine()?.Trim();
 
-                // tryck X för att återgå till huvudmenyn
+                // Tryck X för att återgå till huvudmenyn
                 if (input?.Equals("X", StringComparison.OrdinalIgnoreCase) == true)
                 {
                     ReturnToMenu();
                     return;
                 }
 
-                // Kontrollera att input är en giltig siffra
-                if (int.TryParse(input, out int index))
+                // Kontrollera att input är en giltig siffra och att index finns
+                if (int.TryParse(input, out int index) && index >= 0 && index < packingLists.Count)
                 {
-                    if (index >= 0 && index < packingLists.Count) // Kontrollera att index finns i listan
+                    // En extra bekräftelse för att ta bort packlistan
+                    while (true)
                     {
-                        // En extra bekräftelse för att ta bort packlistan
-                        while (true)
-                        {
-                            Console.Clear();
-                            Console.WriteLine($"Är du säker på att du vill ta bort packlistan för \"{packingLists[index].Destination}\"? (Ja/Nej)");
-                            string confirmation = Console.ReadLine()?.Trim().ToUpper() ?? "";
+                        Console.Clear();
+                        Console.WriteLine($"Är du säker på att du vill ta bort packlistan för \"{packingLists[index].Destination}\"? (Ja/Nej)");
+                        string confirmation = Console.ReadLine()?.Trim().ToUpper() ?? "";
 
-                            // Om användaren skriver Ja, ta bort packlistan
-                            if (confirmation == "JA")
-                            {
-                                packingLists.RemoveAt(index);
-                                SavePackingLists();
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("\nPacklistan har tagits bort!");
-                                Console.ResetColor();
-                                ReturnToMenu();
-                                return;
-                            }
-                            // Om användaren skriver Nej, avbryt
-                            else if (confirmation == "NEJ")
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("\nÅtgärden avbröts. Ingen packlista har tagits bort.");
-                                Console.ResetColor();
-                                ReturnToMenu();
-                                return;
-                            }
-                            else
-                            {
-                                // Felmeddelande för ogiltig input
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Ogiltig inmatning. Ange antingen 'Ja' för att ta bort eller 'Nej' för att avbryta.");
-                                Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
-                                Console.ResetColor();
-                                Console.ReadKey();
-                            }
+                        // Om användaren skriver Ja, ta bort packlistan
+                        if (confirmation == "JA")
+                        {
+                            packingLists.RemoveAt(index); // tar bort packlistan från listan
+                            SavePackingLists(); // sparar ändringarna till JSON-filen
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("\nPacklistan har tagits bort!");
+                            Console.ResetColor();
+                            ReturnToMenu(); // återgår till huvudmenyn
+                            return; // avslutar metoden
                         }
-                    }
-                    else
-                    {
-                        // Felmeddelande om index inte finns i listan
+                        // Om användaren ångrar sig och skriver Nej, avbryt
+                        else if (confirmation == "NEJ")
+                        {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Numret {index} finns inte i listan.");
-                        Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                        Console.WriteLine("\nÅtgärden avbröts. Ingen packlista har tagits bort.");
                         Console.ResetColor();
-                        Console.ReadKey();
+                        ReturnToMenu(); // återgår till huvudmenyn
+                        return; // avslutar metoden
+                        }
+                        else
+                        {
+                            // Felmeddelande för ogiltig input
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Ogiltig inmatning. Ange antingen 'Ja' för att ta bort eller 'Nej' för att avbryta.");
+                            Console.WriteLine("Tryck på valfri tangent för att försöka igen...");
+                            Console.ResetColor();
+                            Console.ReadKey();
+                        }
                     }
                 }
                 else
@@ -1018,6 +1050,7 @@ namespace TravelDiary
             }
         }
 
+        // Metod för att avsluta programmet
         public static void ExitProgram()
         {
             Console.Clear();
