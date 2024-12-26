@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "Destination": "Thailand",
+    "Continent": "Asien",
+    "Duration": 21,
+    "StartDate": "2019-12-02T00:00:00",
+    "EndDate": "2019-12-23T00:00:00",
+    "Cost": 20000,
+    "Companions": [
+      "Alicia",
+      "Amanda"
+    ],
+    "Type": "Vacation"
+  },
+  {
+    "Destination": "Ibiza",
+    "Continent": "Europa",
+    "Duration": 8,
+    "StartDate": "2021-08-01T00:00:00",
+    "EndDate": "2021-08-09T00:00:00",
+    "Cost": 25000,
+    "Companions": [
+      "Josse",
+      "Ida",
+      "Amanda"
+    ],
+    "Type": "Vacation"
+  },
+  {
+    "Destination": "Tokyo",
+    "Continent": "Asien",
+    "Duration": 14,
+    "StartDate": "2024-04-03T00:00:00",
+    "EndDate": "2024-04-17T00:00:00",
+    "Cost": 40000,
+    "Companions": [
+      "pojkv\u00E4n"
+    ],
+    "Type": "Vacation"
+  },
+  {
+    "Destination": "Miami",
+    "Continent": "Nordamerika",
+    "Duration": 14,
+    "StartDate": "2023-09-07T00:00:00",
+    "EndDate": "2023-09-21T00:00:00",
+    "Cost": 35000,
+    "Companions": [
+      "pojkv\u00E4n"
+    ],
+    "Type": "Vacation"
+  },
+  {
+    "Destination": "New York",
+    "Continent": "Nordamerika",
+    "Duration": 7,
+    "StartDate": "2017-10-01T00:00:00",
+    "EndDate": "2017-10-08T00:00:00",
+    "Cost": 30000,
+    "Companions": [
+      "mamma"
+    ],
+    "Type": "Vacation"
+  }
+]

@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "Destination": "Marbella",
+    "Items": [
+      {
+        "Item": "smink",
+        "IsPacked": false
+      },
+      {
+        "Item": "hudv\u00E5rd",
+        "IsPacked": false
+      },
+      {
+        "Item": "lockt\u00E5ng",
+        "IsPacked": false
+      },
+      {
+        "Item": "5 bikinis",
+        "IsPacked": false
+      },
+      {
+        "Item": "3 kjolar",
+        "IsPacked": false
+      },
+      {
+        "Item": "7 toppar",
+        "IsPacked": false
+      },
+      {
+        "Item": "2 kl\u00E4nningar",
+        "IsPacked": false
+      },
+      {
+        "Item": "mobilladdare",
+        "IsPacked": false
+      }
+    ]
+  },
+  {
+    "Destination": "Island",
+    "Items": [
+      {
+        "Item": "Vinterjacka",
+        "IsPacked": false
+      },
+      {
+        "Item": "overall",
+        "IsPacked": false
+      },
+      {
+        "Item": "m\u00F6ssa",
+        "IsPacked": false
+      },
+      {
+        "Item": "vantar",
+        "IsPacked": false
+      },
+      {
+        "Item": "4 par skor",
+        "IsPacked": false
+      },
+      {
+        "Item": "smink",
+        "IsPacked": false
+      },
+      {
+        "Item": "hudv\u00E5rd",
+        "IsPacked": false
+      }
+    ]
+  }
+]
