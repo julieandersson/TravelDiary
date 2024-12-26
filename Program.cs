@@ -13,7 +13,7 @@ namespace TravelDiary
         // Filnamn för att spara resor i JSON-format
         private static string tripsFile = "travelDiary.json";
 
-
+ 
         // Lista för att lagra alla pack-listor med de saker som ska packas ned
         private static List<PackingList> packingLists = new List<PackingList>();
         // Filnamn för att spara packlistor i JSON-format
